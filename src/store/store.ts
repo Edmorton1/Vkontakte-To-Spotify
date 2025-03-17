@@ -1,5 +1,5 @@
 import $api from "@/store/$api";
-import { SpotifyDataInterface } from "@s/router/spotify/types";
+import { SpotifyDataInterface } from "@s/router/types";
 import { makeAutoObservable, runInAction } from "mobx";
 
 

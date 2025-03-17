@@ -1,6 +1,6 @@
 declare module "*.module.scss" {
-  const classes: { [key: string]: string };
-  export default classes;
+  const classes: { readonly [key: string]: string };
+  export = classes;
 }
 declare module "*.{png,jpg,jpeg,gif,wav}" {
   const src: string;

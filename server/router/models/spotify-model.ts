@@ -44,13 +44,20 @@ class SpotifyModel {
     return await request.json();
   }
   take = async (artist: string, name: string) => {
-    const response = await $spotifyPost.get(`https://api.spotify.com/v1/search?q=${`${cleanText(artist)} ${cleanText(name)}`}&type=track&limit=50`);
+    function checkName() {
+      if (artist == 'Unknown') {
+        return encodeURIComponent(name)
+      }
+      return encodeURIComponent(`${artist} ${name}`)
+    }
+
+    const response = await $spotifyPost.get(`https://api.spotify.com/v1/search?q=${checkName()}&type=track&limit=50`);
     const bestMatch = response.data.tracks.items.map((e: spotifyTrackDataInterface) => ({
         vk_name: name,
         spotify_name: e.name,
         name_sim: cosineSimilarity(name, e.name),
         vk_artist: artist,
-        sim_event: cosineSimilarity(artist, e.artists[0].name) < 0.4 || cosineSimilarity(name, e.name),
+        sim_event: cosineSimilarity(artist, e.artists[0].name) < 0.4 || cosineSimilarity(name, e.name) < 0.4,
         spotify_artist: e.artists[0].name,
         arist_sim: cosineSimilarity(artist, e.artists[0].name),
         id: e.id,

@@ -1,4 +1,4 @@
-import * as style from "@/pages/Main/DragDrop.module.scss"
+import * as styles from "@/pages/Main/DragDrop.module.scss"
 import $api from "@/store/$api"
 import store from "@/store/store"
 import { useState } from "react"
@@ -6,7 +6,6 @@ import { useState } from "react"
 
 function DragDrop() {
   const [Drag, setDrag] = useState(false)
-
 
   const dropHandle = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -22,8 +21,7 @@ function DragDrop() {
 
   return (
     <div onDragEnter={(e) => {e.preventDefault(); setDrag(true)}} onDragLeave={(e) => {e.preventDefault(); setDrag(false)}} onDrop={(e) => dropHandle(e)} onDragOver={(e) => {e.preventDefault(); console.log('OVER'); setDrag(true)}}
-    //@ts-ignore
-     className={style.DragDrop}
+     className={styles.dragDrop}
      >{Drag ? 'Отпустите файл чтобы дропнуть' : 'файл тащи'}</div>
   )
 }

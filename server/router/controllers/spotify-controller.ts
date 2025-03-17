@@ -1,5 +1,5 @@
 import { $spotifyPost } from "@s/router/$spotify-post"
-import { chunkArray, cleanText, cosineSimilarity } from "@s/router/functions"
+import { chunkArray, cleanText, cosineSimilarity, delay } from "@s/router/functions"
 import SpotifyModel from "@s/router/models/spotify-model"
 import { SpotifyDataInterface, spotifyTrackDataInterface, trackInterface, userTokens } from "@s/router/types"
 import { Request, Response } from "express"
@@ -8,6 +8,7 @@ import {readFileSync} from 'fs'
 import path from 'path'
 import fs from 'fs/promises'
 import { user_data, user_id } from "@s/router/db"
+import $spotify from "@s/router/$spotify"
 
 class SpotifyController {
     // async getSpotifyData(req: Request, res: Response) {
@@ -55,11 +56,19 @@ class SpotifyController {
             const buffer = Buffer.from(e.fieldname, 'latin1')
             return [buffer.toString('utf-8').slice(0, -5), e.buffer.toString('utf-8')]
         })
-        const total: SpotifyDataInterface[] = await Promise.all(files.map(async (file) => {
-            const $ = cheerio.load(file[1])
-            const tracksElements =  $('.audio_row__performer_title').toArray()
 
-            const tracks: trackInterface[] = await Promise.all(tracksElements.map(async e => {
+        const total: SpotifyDataInterface[] = []
+        for (let file of files) {
+            const $ = cheerio.load(file[1])
+            const tracksElements =  chunkArray($('.audio_row__performer_title').toArray())
+            const playlist: {playlist: string, tracks: trackInterface[]} = {
+                playlist: file[0],
+                tracks: []
+            }
+
+            for (let trackPack of tracksElements) {
+                (tracksElements.length > 1 && await delay(4000))
+                const tracks: trackInterface[] = await Promise.all(trackPack.map(async e => {
                     const artist = $(e).find('.artist_link').text().trim()
                     const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()
                     if (name && artist) {
@@ -68,8 +77,10 @@ class SpotifyController {
                     return null
                 })
             )
-            return {playlist: file[0], tracks: tracks}
-            }))
+            playlist.tracks.push(...tracks)
+            }
+            total.push(playlist)
+        }
         res.json(total)
         user_data.push(...total)
         console.log(total)
@@ -96,11 +107,12 @@ class SpotifyController {
         return 10
     }
     test = async (req: Request, res: Response) => {
-        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
-        await delay(3000)
-        const num = await SpotifyController.testAsync()
-        console.log(num)
+        const qwe = await $spotify.get(`https://api.spotify.com/v1/search?q=Welcome to Jungle&type=track&limit=1`)
+        res.json(qwe.data)
+        // res.json(qwe.data())
+        // arr.map(() => {
+        //     console.log(Math.round(Math.random() * 50000) + 1000)
+        // })
     }
 }
 

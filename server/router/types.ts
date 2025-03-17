@@ -11,6 +11,7 @@ export interface spotifyTrackDataInterface {
   name: string;
   artists: [{ name: string }];
   external_urls: { spotify: string };
+  preview_url: string
 }
 
 
@@ -23,7 +24,7 @@ export interface trackInterface {
   spotify_artist: string;
   id: string
   url: string;
-  sim_event: boolean
+  sim_event: boolean,
 }
 
 export interface SpotifyDataInterface {

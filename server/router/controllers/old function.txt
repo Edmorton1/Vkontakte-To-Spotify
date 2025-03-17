@@ -67,3 +67,21 @@
     await delay(3000)
     return data;
   };
+
+          // const total: SpotifyDataInterface[] = await Promise.all(files.map(async (file) => {
+        //     const $ = cheerio.load(file[1])
+        //     const tracksElements =  $('.audio_row__performer_title').toArray()
+        //     console.log(chunkArray(tracksElements))
+
+        //     const tracks: trackInterface[] = await Promise.all(tracksElements.map(async e => {
+        //             const artist = $(e).find('.artist_link').text().trim()
+        //             const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()
+        //             if (name && artist) {
+        //                 await delay(Math.round(Math.random() * 50000) + 1000)
+        //                 return await SpotifyModel.take(artist, name)
+        //             }
+        //             return null
+        //         })
+        //     )
+        //     return {playlist: file[0], tracks: tracks}
+        //     }))

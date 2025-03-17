@@ -1,0 +1,75 @@
+@use "sass:list";
+$border_radius: 50px;
+$spotify-color: #1DB954;
+$playlist_width: 345px;
+
+.data_main {
+  // background-color: red;
+  width: 95vw;
+  display: grid;
+  column-gap: 15px;
+  row-gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
+}
+.playlist {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  justify-self: center;
+  align-items: center;
+  width: $playlist_width;
+  height: 340px;
+}
+.playlist_image {
+  height: 218px;
+  width: $playlist_width;
+  background-color: purple;
+  text-align: center;
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  line-height: 218px;
+  font-size: 64px;
+  border-radius: $border_radius;
+  overflow: hidden;
+}
+.playlist_button {
+  height: 43px;
+  width: $playlist_width;
+  background-color:$spotify-color;
+  color: white;
+  border-radius: $border_radius;
+  border: 0px;
+  font-size: 30px;
+  cursor: pointer;
+}
+.playlist_button_open {
+  @extend .playlist_button;
+}
+
+
+$colors: 
+  linear-gradient(45deg, rgba(255,0,0,1) 10%, rgba(255,255,0,1) 100%), 
+  linear-gradient(45deg, rgba(0,255,60,1) 0%, rgba(0,102,255,1) 100%), 
+  linear-gradient(45deg, rgba(0,208,255,1) 0%, rgba(255,0,230,1) 100%), 
+  linear-gradient(225deg, rgba(0,208,255,1) 0%, rgba(255,0,230,1) 100%), 
+  linear-gradient(225deg, rgba(0,255,60,1) 0%, rgba(0,102,255,1) 100%), 
+  linear-gradient(225deg, rgba(255,255,0,1) 10%, rgba(255,0,0,1) 100%);
+
+@for $i from 1 through list.length($colors) {
+  .playlist:nth-child(6n + #{$i}) .playlist_image {
+    background: list.nth($colors, $i);
+  }
+}
+
+$colors_button:
+  #FFA628,
+  #00C8B7,
+  #A416F6,
+  #A416F6,
+  #00C8B7,
+  #FFA628;
+
+@for $i from 1 through list.length($colors_button) {
+  .playlist:nth-child(3n + #{$i}) .playlist_button_open {
+    background-color: list.nth($colors_button, $i);
+  }
+}
