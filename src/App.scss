@@ -1,0 +1,25 @@
+:root {
+    --bg_color: #3e3e3e;
+    --fo_color: white
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    background-color: var(--bg_color);
+    color: var(--fo_color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    position: fixed;
+    top: 0;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}

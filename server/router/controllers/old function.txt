@@ -1,0 +1,69 @@
+    getSpotifyTracks = async (req: Request, res: Response) => {
+        let data = user_data_vk
+        console.log(data)
+        data = await Promise.all(
+            data.map(async (playlist) => {
+                const trackPromises = playlist.tracks.map(async ([artist, name]: [string, string]) => {
+                    const response = await $spotifyPost.get(
+                        `https://api.spotify.com/v1/search?q=${`${cleanText(artist)} ${cleanText(name)}`}&type=track&limit=50`
+                    );
+                    const bestMatch = response.data.tracks.items
+                        .map((e: spotifyTrackDataInterface) => ({
+                            vk_name: name,
+                            vk_artist: artist,
+                            spotify_name: e.name,
+                            spotify_artist: e.artists[0].name,
+                            id: e.id,
+                            url: e.external_urls.spotify,
+                            similarity: cosineSimilarity(name, e.name),
+                        }))
+                        .filter((track: trackInterface) => track.similarity >= 0.35)
+                        .sort((a: trackInterface, b: trackInterface) => b.similarity - a.similarity)[0];
+                    return bestMatch;
+                });
+                const updatedTracks = (await Promise.all(trackPromises)).filter(Boolean);
+                return {
+                    ...playlist,
+                    tracks: updatedTracks,
+                };
+            })
+        );
+        //@ts-ignore
+        user_data.push(...data)
+        res.json(data);
+    }
+
+
+      take = async (data: VKDataInterface[]) => {
+    for (const playlist of data) {
+      console.log(Math.random)
+        playlist.tracks.map(async (track, i) => {
+            const [artist, name] = track;
+            // try {
+              await delay(Math.random())
+                const response = await $spotifyPost.get(
+                    `https://api.spotify.com/v1/search?q=${`${cleanText(artist)} ${cleanText(name)}`}&type=track&limit=50`
+                );
+                const bestMatch = response.data.tracks.items
+                    .map((e: spotifyTrackDataInterface) => ({
+                        vk_name: name,
+                        spotify_name: e.name,
+                        name_sim: cosineSimilarity(name, e.name),
+                        vk_artist: artist,
+                        sim_event: cosineSimilarity(artist, e.artists[0].name) < 0.4 || cosineSimilarity(name, e.name),
+                        spotify_artist: e.artists[0].name,
+                        arist_sim: cosineSimilarity(artist, e.artists[0].name),
+                        id: e.id,
+                        url: e.external_urls.spotify,
+                    })).sort((a: trackInterface, b: trackInterface) => b.name_sim - a.name_sim)[0];
+                // console.log(Object.isFrozen('data[0].tracks')); 
+                console.log(i)
+                playlist.tracks[i] = bestMatch
+            // } catch (error) {
+            //     console.error(`Ошибка при обработке ${artist} - ${name}:`, error);
+            // }
+        })
+    }
+    await delay(3000)
+    return data;
+  };

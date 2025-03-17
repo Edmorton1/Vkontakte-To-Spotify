@@ -1,0 +1,5 @@
+class SpotifyController {
+    
+}
+
+export default new SpotifyController()
