@@ -2,9 +2,12 @@ import { toJS } from "mobx";
 import store from "@/store/store";
 import DragDrop from "@/pages/Main/DragDrop";
 import * as styles from "@/pages/Main/Data.module.scss"
+import { useState } from "react";
+import Modal from "@/pages/Main/Modal";
 
 function Data() {
-  console.log(toJS(store.data));
+  // console.log(toJS(store.data));
+  const [modal, setModal] = useState(true)
   const data = toJS(store.data).map((e, i) => {
     // function countNes() {
     //   return (e.tracks.filter((as) => as.sim_event)).length
@@ -24,6 +27,7 @@ function Data() {
 
   return (
     <main className={styles.data_main}>
+      {modal && <Modal setModal={setModal}></Modal>}
       {data}
       <DragDrop />
     </main>

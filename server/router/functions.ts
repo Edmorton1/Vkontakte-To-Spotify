@@ -8,7 +8,7 @@ export function cleanText(text: string): string {
 export function cosineSimilarity(str1: string, str2: string) {
   const words1 = str1.replace(/[^\p{L}\p{N} ]/gui, "").split(" ");
   const words2 = str2.replace(/[^\p{L}\p{N} ]/gui, "").split(" ");
-  console.log(words1, words2)
+  // console.log(words1, words2)
 
   const allWords = new Set([...words1, ...words2]);
 
