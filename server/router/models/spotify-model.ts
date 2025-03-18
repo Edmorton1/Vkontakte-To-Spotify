@@ -55,11 +55,11 @@ class SpotifyModel {
     const bestMatch = response.data.tracks.items.map((e: spotifyTrackDataInterface) => ({
         vk_name: name,
         spotify_name: e.name,
-        name_sim: cosineSimilarity(name, e.name),
+        name_sim: parseFloat(cosineSimilarity(name, e.name).toFixed(2)),
         vk_artist: artist,
         sim_event: cosineSimilarity(artist, e.artists[0].name) < 0.4 || cosineSimilarity(name, e.name) < 0.4,
         spotify_artist: e.artists[0].name,
-        arist_sim: cosineSimilarity(artist, e.artists[0].name),
+        arist_sim: parseFloat(cosineSimilarity(artist, e.artists[0].name).toFixed(2)),
         id: e.id,
         url: e.external_urls.spotify,
       })).sort((a: trackInterface, b: trackInterface) => b.name_sim - a.name_sim)[0];

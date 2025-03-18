@@ -14,7 +14,7 @@ function buildLoaders(options: BuildOptions): ModuleOptions["rules"] {
       test: /\.s[ac]ss$/i,
       use: [
         isProd ? MiniCssExtractPlugin.loader : "style-loader",
-        { loader: "css-loader", options: { modules: true } },
+        { loader: "css-loader", options: { modules: {localIdentName: "[name]__[local]__[hash:base64:5]"} } },
         "sass-loader",
       ],
     },

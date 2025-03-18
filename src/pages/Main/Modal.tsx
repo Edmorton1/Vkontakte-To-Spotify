@@ -1,18 +1,17 @@
 import * as styles from "@/pages/Main/Modal.module.scss"
+import ModalStore from "@/store/ModalStore";
+import { observer } from "mobx-react-lite";
+import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
-interface props {
-  setModal: Function,
-  children: any
-}
-
-function Modal({setModal, children}: props) {
-  return ReactDOM.createPortal(
-    <div className={styles.modal} onClick={() => setModal(false)}>
-      {children}
+function Modal() {
+  console.log(ModalStore.content)
+  return ModalStore.content ? ReactDOM.createPortal(
+    <div className={styles.modal} onClick={() => ModalStore.close()}>
+      {ModalStore.content}
     </div>,
     document.getElementById('root')
-  )
+  ) : null
 }
 
-export default Modal
+export default observer(Modal)

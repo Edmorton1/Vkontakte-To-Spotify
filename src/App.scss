@@ -4,10 +4,13 @@
     --bg_color: #1E1E1E;
     --fo_color: white
 }
-
+#root {
+    height: 100%;
+}
 body {
     // width: 100vw;
     // height: 100vh;
+    height: 100%;
     margin: 0px;
     background-color: var(--bg_color);
     color: var(--fo_color);
