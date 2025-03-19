@@ -114,6 +114,36 @@ class SpotifyController {
         //     console.log(Math.round(Math.random() * 50000) + 1000)
         // })
     }
+    updateTrack = async (req: Request, res: Response) => {
+        const playlist = Number(req.params.playlist)
+        const track = Number(req.params.track)
+        const methond = Object.keys(req.body)[0] as 'url' | 'sim_event' | 'delete'
+        console.log(req.body)
+        if (methond == 'url') {
+            const url = req.body.url.split('/').pop()
+            const response = (await $spotify(`https://api.spotify.com/v1/tracks/${url}`)).data as spotifyTrackDataInterface
+            const result: trackInterface = {
+                vk_name: null,
+                spotify_name: response.name,
+                name_sim: null,
+                vk_artist: null,
+                sim_event: false,
+                spotify_artist: response.artists[0].name,
+                arist_sim: null,
+                id: response.id,
+                url: response.external_urls.spotify,
+            }
+            user_data[playlist].tracks[track] = result
+        }
+        if (methond == 'sim_event') {
+            user_data[playlist].tracks[track][methond] = false
+        }
+        if (methond == 'delete') {
+            user_data[playlist].tracks.splice(track, 1)
+        }
+        console.log(user_data[playlist].tracks)
+        res.json(user_data[playlist].tracks)
+    }
 }
 
 export default new SpotifyController()

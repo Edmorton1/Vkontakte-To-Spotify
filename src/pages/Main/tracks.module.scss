@@ -1,5 +1,6 @@
 $img-size: 30px;
 $icon-width: 36%;
+$img-margin: $img-size + 15px;
 
 .tracks {
   // margin-top: 10%;
@@ -23,7 +24,7 @@ $icon-width: 36%;
 }
 .tracks_header {
   display: grid;
-  grid-template-columns: repeat(3, 1fr) $img-size + 15px;
+  grid-template-columns: repeat(3, 1fr) $img-margin;
   align-items: center;
 
   span {
@@ -42,13 +43,14 @@ $icon-width: 36%;
     width: 50px;
     height: 50px;
     margin: 0;
+    // padding-right: 100px;
   }
 }
 
 .track {
   display: grid;
   // gap: 100px;
-  grid-template-columns: repeat(3, 1fr) $img-size + 15px;
+  grid-template-columns: repeat(3, 1fr) $img-margin;
   align-items: center;
   // column-gap: 10px;
 }
@@ -67,11 +69,59 @@ $icon-width: 36%;
 .twin:nth-child(2) {
   align-items: center;
 }
+
 .burger {
-  background-color: red;
+  // background-color: red;
   display: flex;
   flex-direction: column;
-  width: 100px;
+  // width: 120px;
+
+  // height: 400px;
   position: absolute;
-  right: 0;
+  margin-left: $img-margin + 10px;
+  // margin-left: $img-margin;
+
+
+  button {
+    border: none;
+    color: white;
+    font-size: 25px;
+    // background-color: var(--sportify-color);
+  }
+  button:nth-child(2) {
+    background-color: var(--sportify-color);
+  }
+  button:nth-child(3) {
+    background-color: var(--change-color);
+  }
+  button:first-child {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: var(--gray-font-color);
+  }
+  button:last-child {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: var(--delete-color);
+  }
+}
+
+.cross {
+  display: inline-block;
+  padding-right: $img-margin;
+  img {
+    transition: 0.2s ease-in-out;
+  }
+  span {
+    display: inline-block;
+    height: $img-size;
+    padding-right: $img-margin;
+  }
+
+
+}
+.cross:hover {
+  img {
+    transform: rotate(90deg);
+  }
 }

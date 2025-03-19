@@ -1,7 +1,6 @@
 import Data from "@/pages/Main/Data"
 import DragDrop from "@/pages/Main/DragDrop"
 import store from "@/store/store"
-import { toJS } from "mobx"
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
@@ -29,11 +28,11 @@ function Main() {
       <Link to={url}>Войти</Link>
     )
   }
-  if (toJS(store.data).length > 0) {
+  if (store.data.length > 0) {
     return <Data />
   }
   if (auth === true) {
-    console.log(toJS(store.data).length)
+    console.log(store.data.length)
     return (
       <DragDrop />
     )

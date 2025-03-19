@@ -23,6 +23,7 @@ class SpotifyModel {
   //   console.log('LJ<FDKTYJ')
   //   return request
   // }
+
   async getCallback(code: string, state: string) {
     console.log(code);
     const data = qs.stringify({

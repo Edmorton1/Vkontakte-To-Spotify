@@ -1,6 +1,7 @@
 import * as styles from "@/pages/Main/DragDrop.module.scss"
 import $api from "@/store/$api"
 import store from "@/store/store"
+import { observer } from "mobx-react-lite"
 import { useState } from "react"
 
 
@@ -26,4 +27,4 @@ function DragDrop() {
   )
 }
 
-export default DragDrop
+export default observer(DragDrop)

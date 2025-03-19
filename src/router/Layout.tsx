@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Outlet } from "react-router-dom";
 
 function Layout() {
@@ -14,4 +15,4 @@ function Layout() {
   );
 }
 
-export default Layout;
+export default observer(Layout);

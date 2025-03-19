@@ -2,6 +2,7 @@ import $api from "@/store/$api";
 import { SpotifyDataInterface } from "@s/router/types";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 
+type changeTypes = | `sim_event` | 'url' | 'delete'
 
 class Store {
   constructor() {
@@ -115,6 +116,25 @@ class Store {
   }
   setPlaylist = (index: number) => {
     return toJS(this.data[index])
+  }
+
+  async updateTracks(playlist: number, track: number, changeType: changeTypes, changeValue: string = '') {
+    // console.log(playlist, track, changeType, changeValue)
+    // runInAction(() => this.data[playlist].tracks[track]['vk_name'] = 'changeValue')
+    // const requnest = await $api.put(`http://localhost:3000/api/updateTrack/${playlist}/${track}`, {
+    //   url: changeValue
+    // })
+    if (changeType == 'url') {
+
+    }
+    if (changeType == 'sim_event') {
+      
+    }
+    if (changeType == 'delete') {
+      runInAction(() => this.data[playlist].tracks.splice(0, 1))
+      console.log(this.data)
+    }
+    // runInAction(() => this.data[playlist].tracks = requnest.data)
   }
 }
 

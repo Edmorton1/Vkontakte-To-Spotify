@@ -2,7 +2,11 @@
 
 :root {
     --bg_color: #1E1E1E;
-    --fo_color: white
+    --fo_color: white;
+    --sportify-color: #1DB954;
+    --change-color: #FFAE00;
+    --delete-color: #E20000;
+    --gray-font-color: #ACACAC;
 }
 #root {
     height: 100%;
@@ -46,4 +50,8 @@ a {
 * {
     font-family: 'Inter', sans-serif;
     font-weight: 800;
+}
+
+button {
+    cursor: pointer;
 }

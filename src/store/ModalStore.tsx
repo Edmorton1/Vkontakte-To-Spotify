@@ -2,7 +2,9 @@ import { makeAutoObservable } from "mobx"
 
 class ModalStore {
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this, {
+      content: true
+    })
   }
 
   content: React.ReactElement = null
