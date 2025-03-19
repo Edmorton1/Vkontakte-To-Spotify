@@ -5,7 +5,7 @@ class ModalStore {
     makeAutoObservable(this)
   }
 
-  content = <div>asdasd</div>
+  content: React.ReactElement = null
 
   open = (data: React.ReactElement) => {
     this.content = data

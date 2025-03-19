@@ -4,8 +4,9 @@ $icon-width: 36%;
 .tracks {
   // margin-top: 10%;
   background-color: #282828;
+  // width: 50%;
   display: grid;
-  row-gap: 15px;
+  row-gap: 7px;
   padding: 50px;
   padding-top: 15px;
   border-radius: 10vh;
@@ -65,4 +66,12 @@ $icon-width: 36%;
 }
 .twin:nth-child(2) {
   align-items: center;
+}
+.burger {
+  background-color: red;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  position: absolute;
+  right: 0;
 }
