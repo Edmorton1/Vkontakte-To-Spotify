@@ -1,7 +1,7 @@
 import { Routes } from 'react-router-dom';
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 import Router from '@/router/Router';
-import "./App.scss"
+import "@/css/App.scss"
 import { observer } from 'mobx-react-lite';
 
 function App() {

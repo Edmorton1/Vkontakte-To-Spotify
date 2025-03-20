@@ -1,0 +1,39 @@
+.dragDrop {
+  background-color: white;
+  color: black;
+  width: 345px;
+  height: 340px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 20px;
+}
+.block {
+  background-color: #404040;
+  // outline: 10px solid #616161;
+  box-shadow: inset 0 0 0 10px #616161; 
+  font-size: 64px;
+  text-align: center;
+  width: 345px;
+  height: 340px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 20px;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loader {
+  width: 50%;
+
+  animation: loading 4s linear infinite;
+}

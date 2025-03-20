@@ -1,4 +1,4 @@
-import * as styles from "@/pages/Main/DragDrop.module.scss"
+import * as styles from "@/css/dragDrop.module.scss"
 import $api from "@/store/$api"
 import store from "@/store/store"
 import { observer } from "mobx-react-lite"

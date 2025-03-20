@@ -1,0 +1,91 @@
+$img-size: 30px;
+$icon-width: 36%;
+$img-margin: $img-size + 15px;
+
+.tracks {
+  // margin-top: 10%;
+  background-color: #282828;
+  // width: 50%;
+  display: grid;
+  row-gap: 7px;
+  padding: 25px;
+  padding-top: 15px;
+  border-radius: 50px;
+
+  img {
+    width: $img-size;
+    height: $img-size;
+    margin-left: 15px;
+  }
+
+  * {
+    font-weight: 500;
+  }
+}
+
+
+.tracksHeader {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) $img-margin;
+  align-items: center;
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  span:nth-child(2) {
+    background-color: #454545;
+    border-radius: 20px;
+    height: 75%;
+    font-size: 24px;
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    // padding-right: 100px;
+  }
+}
+
+
+.track {
+  display: grid;
+  grid-template-rows: minmax(40px, 100%);
+  // gap: 100px;
+  grid-template-columns: repeat(3, 1fr) $img-margin;
+  align-items: center;
+  // column-gap: 10px;
+}
+.track_sim_event {
+  @extend .track;
+
+  .twin {
+    color: rgb(255, 0, 0);
+
+    span:nth-child(2) {
+      color: rgb(209, 0, 0);
+    }
+  }
+}
+
+.trackChange {
+  @extend .track;
+  column-gap: 5px;
+  grid-template-columns: 60% 1fr 1fr;
+}
+
+.twin {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  span:nth-child(2) {
+    color: #ACACAC;
+  }
+}
+.twin:nth-child(2) {
+  align-items: center;
+}

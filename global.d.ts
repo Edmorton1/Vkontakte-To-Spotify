@@ -6,6 +6,10 @@ declare module "*.{png,jpg,jpeg,gif,wav}" {
   const src: string;
   export default src;
 }
+declare module "*.png" {
+  const src: string;
+  export default src;
+}
 declare module "*.svg" {
   import * as React from "react";
 

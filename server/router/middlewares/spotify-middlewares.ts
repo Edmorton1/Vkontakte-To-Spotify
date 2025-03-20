@@ -1,4 +1,4 @@
-import { $spotifyPost, getAccessToken } from "@s/router/$spotify-post"
+import { $spotifyPost, getAccessToken } from "@s/router/axios/$spotify-post"
 import { user_id } from "@s/router/db"
 import { Request, Response, NextFunction } from "express"
 

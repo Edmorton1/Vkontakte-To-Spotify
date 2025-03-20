@@ -1,9 +1,10 @@
 @use "sass:list";
+
 $border_radius: 50px;
 $spotify-color: #1DB954;
 $playlist_width: 345px;
 
-.data_main {
+.main {
   // background-color: red;
   width: 95vw;
   display: grid;
@@ -11,7 +12,7 @@ $playlist_width: 345px;
   row-gap: 15px;
   grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
 }
-.playlist {
+.playlistContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -20,10 +21,9 @@ $playlist_width: 345px;
   width: $playlist_width;
   height: 340px;
 }
-.playlist_image {
+.playlistCover {
   height: 218px;
   width: $playlist_width;
-  background-color: purple;
   text-align: center;
   text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   line-height: 218px;
@@ -31,7 +31,7 @@ $playlist_width: 345px;
   border-radius: $border_radius;
   overflow: hidden;
 }
-.playlist_button {
+.button {
   height: 43px;
   width: $playlist_width;
   background-color:$spotify-color;
@@ -39,11 +39,15 @@ $playlist_width: 345px;
   border-radius: $border_radius;
   border: 0px;
   font-size: 30px;
+  transition: 0.1s linear;
 }
-.playlist_button_open {
-  @extend .playlist_button;
+.button:hover{
+  // background-color: red !important;
+  transform: scale(1.07)
 }
-
+.button_open {
+  @extend .button;
+}
 
 $colors: 
   linear-gradient(45deg, rgba(255,0,0,1) 10%, rgba(255,255,0,1) 100%), 
@@ -54,7 +58,7 @@ $colors:
   linear-gradient(225deg, rgba(255,255,0,1) 10%, rgba(255,0,0,1) 100%);
 
 @for $i from 1 through list.length($colors) {
-  .playlist:nth-child(6n + #{$i}) .playlist_image {
+  .playlistContainer:nth-child(6n + #{$i}) .playlistCover {
     background: list.nth($colors, $i);
   }
 }
@@ -68,7 +72,7 @@ $colors_button:
   #FFA628;
 
 @for $i from 1 through list.length($colors_button) {
-  .playlist:nth-child(3n + #{$i}) .playlist_button_open {
+  .playlistContainer:nth-child(3n + #{$i}) .button_open {
     background-color: list.nth($colors_button, $i);
   }
 }

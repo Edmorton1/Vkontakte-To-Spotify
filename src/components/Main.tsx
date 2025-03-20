@@ -1,5 +1,5 @@
-import Data from "@/pages/Main/Data"
-import DragDrop from "@/pages/Main/DragDrop"
+import Data from "@/components/Data"
+import DragDrop from "@/components/DragDrop"
 import store from "@/store/store"
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"

@@ -1,4 +1,4 @@
-import { $spotifyPost } from "@s/router/$spotify-post"
+import { $spotifyPost } from "@s/router/axios/$spotify-post"
 import { chunkArray, cleanText, cosineSimilarity, delay } from "@s/router/functions"
 import SpotifyModel from "@s/router/models/spotify-model"
 import { SpotifyDataInterface, spotifyTrackDataInterface, trackInterface, userTokens } from "@s/router/types"
@@ -8,7 +8,7 @@ import {readFileSync} from 'fs'
 import path from 'path'
 import fs from 'fs/promises'
 import { user_data, user_id } from "@s/router/db"
-import $spotify from "@s/router/$spotify"
+import $spotify from "@s/router/axios/$spotify"
 
 class SpotifyController {
     // async getSpotifyData(req: Request, res: Response) {
@@ -67,7 +67,7 @@ class SpotifyController {
             }
 
             for (let trackPack of tracksElements) {
-                (tracksElements.length > 1 && await delay(4000))
+                (tracksElements.length > 1 && await delay(5000))
                 const tracks: trackInterface[] = await Promise.all(trackPack.map(async e => {
                     const artist = $(e).find('.artist_link').text().trim()
                     const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()
@@ -141,8 +141,7 @@ class SpotifyController {
         if (methond == 'delete') {
             user_data[playlist].tracks.splice(track, 1)
         }
-        console.log(user_data[playlist].tracks)
-        res.json(user_data[playlist].tracks)
+        res.json(user_data[playlist].tracks[track])
     }
 }
 

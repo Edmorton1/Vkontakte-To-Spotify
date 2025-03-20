@@ -6,8 +6,8 @@ export function cleanText(text: string): string {
 }
 
 export function cosineSimilarity(str1: string, str2: string) {
-  const words1 = str1.replace(/[^\p{L}\p{N} ]/gui, "").split(" ");
-  const words2 = str2.replace(/[^\p{L}\p{N} ]/gui, "").split(" ");
+  const words1 = str1.toLocaleLowerCase().replace(/[^\p{L}\p{N} ]/gui, "").split(" ");
+  const words2 = str2.toLowerCase().replace(/[^\p{L}\p{N} ]/gui, "").split(" ");
   // console.log(words1, words2)
 
   const allWords = new Set([...words1, ...words2]);
@@ -22,7 +22,7 @@ export function cosineSimilarity(str1: string, str2: string) {
   return magnitude1 * magnitude2 === 0 ? 0 : dotProduct / (magnitude1 * magnitude2);
 }
 
-export const chunkArray = (arr: any[], size: number = 49) => {
+export const chunkArray = (arr: any[], size: number = 24) => {
   return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
       arr.slice(i * size, (i + 1) * size)
   );

@@ -1,5 +1,5 @@
 import SpotifyController from "@s/router/controllers/spotify-controller"
-import SpotifyMiddlewares from "@s/router/spotify-middlewares"
+import SpotifyMiddlewares from "@s/router/middlewares/spotify-middlewares"
 import express from "express"
 import multer from 'multer'
 const upload = multer({ storage: multer.memoryStorage() })

@@ -1,11 +1,10 @@
 import { Route } from "react-router-dom";
-import { LazyMidi, LazyMain } from '@/pages/index.lazy';
+import { LazyMain } from '@/router/index.lazy';
 import Layout from './Layout';
 
 function Router() {
   return (
     <Route path="/" element={<Layout />}>
-      <Route path="/midi" element={<LazyMidi />}></Route>
       <Route index element={<LazyMain />}></Route>
     </Route>
   );

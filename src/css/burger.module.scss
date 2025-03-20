@@ -1,0 +1,59 @@
+$img-size: 30px;
+$img-margin: $img-size + 15px;
+
+.burger {
+  // background-color: red;
+  display: flex;
+  flex-direction: column;
+  transition: 1s linear;
+  // width: 120px;
+
+  // height: 400px;
+  position: absolute;
+  margin-left: $img-margin;
+  padding-left: 10px;
+
+
+  button {
+    border: none;
+    color: white;
+    font-size: 25px;
+    // background-color: var(--sportify-color);
+  }
+  button:nth-child(2) {
+    background-color: var(--sportify-color);
+  }
+  button:nth-child(3) {
+    background-color: var(--change-color);
+  }
+  button:first-child {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: var(--gray-font-color);
+  }
+  button:last-child {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: var(--delete-color);
+  }
+}
+
+.cross {
+  display: inline-block;
+  // padding-right: $img-margin;
+  img {
+    transition: 0.2s ease-in-out;
+  }
+  span {
+    display: inline-block;
+    height: $img-size;
+    // padding-right: $img-margin;
+  }
+
+
+}
+.cross:hover {
+  img {
+    transform: rotate(90deg);
+  }
+}

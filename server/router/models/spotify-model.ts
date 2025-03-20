@@ -1,9 +1,11 @@
 // import { AuthorizationBasic } from "@s/router/spotify/database";
-import { $spotifyPost } from "@s/router/$spotify-post"
+import { $spotifyPost } from "@s/router/axios/$spotify-post"
 import { AuthorizationBasic } from "@s/router/db";
 import * as qs from "qs";
 import { spotifyTrackDataInterface, trackInterface } from "@s/router/types";
 import { cleanText,cosineSimilarity, delay } from "@s/router/functions";
+
+type trackInterfaceWithSim = trackInterface & {sim_total: number}
 
 // https://api.spotify.com/v1/search?q=morgen&type=album&limit=1
 // https://api.spotify.com/v1/users/Weekend
@@ -45,26 +47,36 @@ class SpotifyModel {
     return await request.json();
   }
   take = async (artist: string, name: string) => {
-    function checkName() {
-      if (artist == 'Unknown') {
-        return encodeURIComponent(name)
-      }
-      return encodeURIComponent(`${artist} ${name}`)
+    // function checkName() {
+    //   if (artist == 'Unknown') {
+    //     return encodeURIComponent(name)
+    //   }
+    //   return encodeURIComponent(`${artist} ${name}`)
+    // }
+    async function getResponse(str: string) {
+      const response = await $spotifyPost.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(str)}&type=track&limit=50`);
+      const bestMatch = response.data.tracks.items.map((e: spotifyTrackDataInterface) => ({
+          vk_name: name,
+          spotify_name: e.name,
+          name_sim: parseFloat(cosineSimilarity(name, e.name).toFixed(2)),
+          vk_artist: artist,
+          sim_event: cosineSimilarity(artist, e.artists[0].name) < 0.4 || cosineSimilarity(name, e.name) < 0.4,
+          spotify_artist: e.artists[0].name,
+          arist_sim: parseFloat(cosineSimilarity(artist, e.artists[0].name).toFixed(2)),
+          id: e.id,
+          url: e.external_urls.spotify,
+          sim_total: parseFloat(cosineSimilarity(name, e.name).toFixed(2)) + parseFloat(cosineSimilarity(artist, e.artists[0].name).toFixed(2))
+        })).sort((a: trackInterfaceWithSim, b: trackInterfaceWithSim) => (b.sim_total) - (a.sim_total))[0];
+      return bestMatch
     }
-
-    const response = await $spotifyPost.get(`https://api.spotify.com/v1/search?q=${checkName()}&type=track&limit=50`);
-    const bestMatch = response.data.tracks.items.map((e: spotifyTrackDataInterface) => ({
-        vk_name: name,
-        spotify_name: e.name,
-        name_sim: parseFloat(cosineSimilarity(name, e.name).toFixed(2)),
-        vk_artist: artist,
-        sim_event: cosineSimilarity(artist, e.artists[0].name) < 0.4 || cosineSimilarity(name, e.name) < 0.4,
-        spotify_artist: e.artists[0].name,
-        arist_sim: parseFloat(cosineSimilarity(artist, e.artists[0].name).toFixed(2)),
-        id: e.id,
-        url: e.external_urls.spotify,
-      })).sort((a: trackInterface, b: trackInterface) => b.name_sim - a.name_sim)[0];
-    return bestMatch
+    const first = await getResponse(`${artist} ${name}`)
+    console.log('фирст')
+    // await delay(1000)
+    console.log('секонд')
+    const second = await getResponse(name)
+    const total = [first, second].sort((a: trackInterfaceWithSim, b: trackInterfaceWithSim) => (b.sim_total) - (a.sim_total))[0]
+    delete total.sim_total
+    return total
   }
 }
 

@@ -1,6 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
-import router from "@s/router/router"
+import router from "@s/router"
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 

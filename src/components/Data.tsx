@@ -1,0 +1,46 @@
+import store from "@/store/store";
+import DragDrop from "@/components/DragDrop";
+import * as styles from "@/css/data.module.scss"
+import ModalStore from "@/store/ModalStore";
+import Modal from "@/components/Modal";
+import * as styles_tracks from "@/css/tracks.module.scss"
+import TrackList from "@/components/TrackList";
+import { observer } from "mobx-react-lite";
+import { useRef, useState } from "react";
+import Block from "@/components/Block";
+import BlockStore from "@/store/BlockStore";
+import * as styles_drop from "@/css/dragDrop.module.scss"
+import loader from "@/assets/loader.png"
+import TransitionShablon from "@/components/TransitionShablon";
+import Playlists from "@/components/Playlists";
+
+function Data() {
+  const [openPlaylist, setOpenPlaylist] = useState(0)
+  const nodeRef = useRef(null)
+  const playlistRef = useRef(null)
+  const dropHandle = async (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files
+    let formData = new FormData()
+    Array.from(files).forEach(file => formData.append(file.name, file))
+    store.loadPlaylists(formData)
+  }
+
+  return (
+    <main className={styles.main}
+      onDragEnter={(event) => {BlockStore.open(); event.preventDefault()}}
+      onDrop={(event) => {dropHandle(event)}}
+      onDragOver={(e) => {e.preventDefault(); console.log('OVER')}}
+      onDragLeave={(event) => 
+      {event.preventDefault(); if (!event.relatedTarget || !document.getElementsByClassName(styles.main)[0].contains(event.relatedTarget as Node)) BlockStore.close()}}>
+      {/* {data} */}
+      <Playlists />
+      <TransitionShablon nodeRef={nodeRef} inside={BlockStore.isOpen} >
+        <Block><div ref={nodeRef} className={styles_drop.block}>{store.isLoad ? <img src={loader} className={styles_drop.loader} /> : `Новый плейлист`}</div></Block>
+      </TransitionShablon>
+      {/* <DragDrop /> */}
+    </main>
+  );
+}
+
+export default observer(Data);
