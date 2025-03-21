@@ -8,24 +8,23 @@ import TrackList from "@/components/TrackList";
 import { observer } from "mobx-react-lite";
 import { useRef, useState } from "react";
 import Block from "@/components/Block";
-import BlockStore from "@/store/BlockStore";
 import * as styles_drop from "@/css/dragDrop.module.scss"
 import loader from "@/assets/loader.png"
 import TransitionShablon from "@/components/TransitionShablon";
+import { CSSTransition, TransitionGroup } from "react-transition-group"
+import * as animations from "@/css/animations/animations.module.scss"
 
 function Playlists() {
   const [openPlaylist, setOpenPlaylist] = useState(0)
   const playlistRef = useRef(null)
 
-  return store.data.map((e, playlist_id) => {
+  const renderPlaylists = () => store.data.map((e, playlist_id) => {
     // function countNes() {
     //   return (e.tracks.filter((as) => as.sim_event)).length
     // }
     // console.log(countNes())
     function tracks(playlist: number) {
       return <div onClick={(event) => event.stopPropagation()} className={styles_tracks.tracks}>
-        {/* <button onClick={() => runInAction(() => store.data[i].tracks[0].vk_name = 'afoasdas')}>открыть даут</button>
-        <button onClick={() => console.log(store.data[i].tracks[0])}>обнова</button> */}
         <div className={styles_tracks.tracksHeader}>
           <span><img src="https://cdn.worldvectorlogo.com/logos/spotify-2.svg" /></span>
           <span>Схожесть</span>
@@ -38,6 +37,12 @@ function Playlists() {
     }
 
     return (
+      <CSSTransition timeout={300} nodeRef={playlistRef} classNames={{
+        enter: animations.enter,
+        enterActive: animations.enterActive,
+        exit: animations.exit,
+        exitActive: animations.exitActive
+      }}>
         <div ref={playlistRef} key={playlist_id} className={styles.playlistContainer}>
           <div className={styles.playlistCover}>{e.playlist}</div>
           <span>{`${(e.tracks.filter((sim) => sim.sim_event)).length} треков из ${e.tracks.length} несовпадают`}</span>
@@ -45,8 +50,15 @@ function Playlists() {
           {openPlaylist == playlist_id &&<Modal>{tracks(playlist_id)}</Modal>}
           <button onClick={() => console.log('asdasdsad')} className={styles.button}>добавить на Spotify</button>
         </div>
+      </CSSTransition>
     )
   });
+
+  return (
+    <TransitionGroup component={null}>
+      {renderPlaylists()}
+    </TransitionGroup>
+  )
 }
 
 export default Playlists

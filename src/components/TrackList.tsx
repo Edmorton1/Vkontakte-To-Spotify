@@ -7,10 +7,9 @@ import store from "@/store/store";
 import { observer } from "mobx-react-lite";
 import * as styles_shablon from "@/css/shablon.module.scss"
 import { CSSTransition, Transition } from "react-transition-group";
-import * as animations from "@/css/animations.module.scss"
 import { useRef } from "react";
 import TransitionShablon from "@/components/TransitionShablon";
-import BlockStore from "@/store/BlockStore";
+import * as animations from "@/css/animations/burgerAnimation.module.scss"
 
 interface propsInterface {
   track: trackInterface,
@@ -43,14 +42,19 @@ function TrackList({track, index, playlist}: propsInterface) {
         <span>{track.vk_artist}</span>
       </div>
       <div onMouseEnter={() => {setBurger(index); console.log(burger)}} onMouseLeave={() => setBurger(-1)} className={stylesBurger.cross} >
-        <TransitionShablon nodeRef={nodeRef} inside={burger == index}>
+        <CSSTransition nodeRef={nodeRef} in={burger == index} timeout={500} unmountOnExit classNames={{
+          enter: animations.enter,
+          enterActive: animations.enterActive,
+          exit: animations.exit,
+          exitActive: animations.exitActive
+        }}>
         <div ref={nodeRef} className={stylesBurger.burger}>
           <button>Послушать</button>
           <button>Одобрить</button>
           <button>Изменить</button>
           <button>Удалить</button>
         </div>
-        </TransitionShablon>
+        </CSSTransition>
         <span><img src={burger_img} /></span>
       </div>
       </>

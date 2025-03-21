@@ -11,6 +11,7 @@ $playlist_width: 345px;
   column-gap: 15px;
   row-gap: 15px;
   grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
+  // background-color: var(--bg_color);
 }
 .playlistContainer {
   display: flex;
@@ -20,6 +21,7 @@ $playlist_width: 345px;
   align-items: center;
   width: $playlist_width;
   height: 340px;
+  // background-color: var(--bg_color);
 }
 .playlistCover {
   height: 218px;

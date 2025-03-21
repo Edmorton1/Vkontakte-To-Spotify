@@ -1,5 +1,4 @@
 import $api from "@/store/$api";
-import BlockStore from "@/store/BlockStore";
 import { SpotifyDataInterface } from "@s/router/types";
 import { action, makeAutoObservable, runInAction, toJS } from "mobx";
 
@@ -226,14 +225,14 @@ class Store {
     const request = await $api.get('http://localhost:3000/api/checkRefreshToken')
     return runInAction(() => request.data)
   }
-  loadPlaylists = action(async (formData: FormData) => {
+  loadPlaylists = action(async (formData: FormData, setShowBlock: Function) => {
     this.isLoad = true
     const data = await (await $api.post(`http://localhost:3000/api/take`, formData)).data
     // store.loadPlaylists(request.data)
     console.log(data)
     this.data.push(...data)
     this.isLoad = false
-    BlockStore.close()
+    setShowBlock(false)
   })
   setPlaylist = (index: number) => {
     return this.data[index]

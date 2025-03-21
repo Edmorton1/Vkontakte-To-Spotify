@@ -1,5 +1,5 @@
 import { CSSTransition } from "react-transition-group"
-import * as animations from "@/css/animations.module.scss"
+import * as animations from "@/css/animations/animations.module.scss"
 
 interface propsInterface {
   inside: boolean,
