@@ -3,7 +3,7 @@ $time: 500ms;
 
 .enter {
   opacity: 0;
-  transform: translateX(- burger.$img-margin + burger.$img-size);
+  transform: translateX(burger.$img-size);
 }
 .enterActive {
   opacity: 1;
@@ -15,6 +15,27 @@ $time: 500ms;
 }
 .exitActive {
   opacity: 0;
-  transform: translateX(- burger.$img-margin + burger.$img-size);
+  transform: translateX(burger.$img-size);
   transition: opacity $time, transform $time;
 }
+
+// $time: 500ms;
+// @use "@/css/burger.module.scss" as burger;
+
+// .enter {
+//   opacity: 0;
+//   transform: translateX(- burger.$img-margin + burger.$img-size);
+// }
+// .enterActive {
+//   opacity: 1;
+//   transform: translateX(0);
+//   transition: opacity $time, transform $time;
+// }
+// .exit {
+//   opacity: 1;
+// }
+// .exitActive {
+//   opacity: 0;
+//   transform: translateX(- burger.$img-margin + burger.$img-size);
+//   transition: opacity $time, transform $time;
+// }

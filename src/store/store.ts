@@ -249,6 +249,7 @@ class Store {
       }
       if (changeType == 'delete') {
         this.data[playlist].tracks.splice(0, 1)
+        console.log(toJS(this.data[playlist].tracks))
       }
   })
 }

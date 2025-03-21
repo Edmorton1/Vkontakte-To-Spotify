@@ -1,5 +1,6 @@
 $img-size: 30px;
 $img-margin: $img-size + 15px;
+$button-width: 143px;
 
 .burger {
   // background-color: red;
@@ -10,14 +11,16 @@ $img-margin: $img-size + 15px;
 
   // height: 400px;
   position: absolute;
-  margin-left: $img-margin;
-  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: -$button-width + 5px;
+  // padding-left: 10px;
 
 
   button {
     border: none;
     color: white;
-    font-size: 25px;
+    font-size: 24px;
+    width: $button-width;
     // background-color: var(--sportify-color);
   }
   button:nth-child(2) {

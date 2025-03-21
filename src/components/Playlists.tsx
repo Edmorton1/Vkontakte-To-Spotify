@@ -13,6 +13,7 @@ import loader from "@/assets/loader.png"
 import TransitionShablon from "@/components/TransitionShablon";
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import * as animations from "@/css/animations/animations.module.scss"
+// import * as cross from "@/assets/cross.png"
 
 function Playlists() {
   const [openPlaylist, setOpenPlaylist] = useState(0)
@@ -47,7 +48,9 @@ function Playlists() {
           <div className={styles.playlistCover}>{e.playlist}</div>
           <span>{`${(e.tracks.filter((sim) => sim.sim_event)).length} треков из ${e.tracks.length} несовпадают`}</span>
           <button onClick={() => {ModalStore.open(); setOpenPlaylist(playlist_id)}} className={styles.button_open}>Открыть</button>
-          {openPlaylist == playlist_id &&<Modal>{tracks(playlist_id)}</Modal>}
+          {openPlaylist == playlist_id &&
+            <Modal>{tracks(playlist_id)}</Modal>
+          }
           <button onClick={() => console.log('asdasdsad')} className={styles.button}>добавить на Spotify</button>
         </div>
       </CSSTransition>
@@ -61,4 +64,4 @@ function Playlists() {
   )
 }
 
-export default Playlists
+export default observer(Playlists)

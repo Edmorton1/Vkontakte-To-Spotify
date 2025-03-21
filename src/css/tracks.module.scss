@@ -6,7 +6,9 @@ $img-margin: $img-size + 15px;
   // margin-top: 10%;
   background-color: #282828;
   // width: 50%;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  max-width: 50vw;
   row-gap: 7px;
   padding: 25px;
   padding-top: 15px;
@@ -52,9 +54,9 @@ $img-margin: $img-size + 15px;
 
 .track {
   display: grid;
-  grid-template-rows: minmax(40px, 100%);
+  grid-template-rows: minmax(42px, 100%);
   // gap: 100px;
-  grid-template-columns: repeat(3, 1fr) $img-margin;
+  grid-template-columns: 1fr 0.3fr 1fr $img-margin;
   align-items: center;
   // column-gap: 10px;
 }

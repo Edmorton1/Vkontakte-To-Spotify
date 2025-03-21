@@ -49,10 +49,10 @@ function TrackList({track, index, playlist}: propsInterface) {
           exitActive: animations.exitActive
         }}>
         <div ref={nodeRef} className={stylesBurger.burger}>
-          <button>Послушать</button>
-          <button>Одобрить</button>
-          <button>Изменить</button>
-          <button>Удалить</button>
+          <button onClick={() => window.open(track.url)}>Послушать</button>
+          <button onClick={() => {store.updateTracks(playlist, index, 'sim_event'); setBurger(-1)}}>Одобрить</button>
+          <button onClick={() => setChangeId(index)}>Изменить</button>
+          <button onClick={() => {store.updateTracks(playlist, index, 'delete'); setBurger(-1)}}>Удалить</button>
         </div>
         </CSSTransition>
         <span><img src={burger_img} /></span>
