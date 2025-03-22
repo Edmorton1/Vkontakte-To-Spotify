@@ -1,7 +1,6 @@
 import store from "@/store/store";
 import DragDrop from "@/components/DragDrop";
 import * as styles from "@/css/data.module.scss"
-import ModalStore from "@/store/ModalStore";
 import Modal from "@/components/Modal";
 import * as styles_tracks from "@/css/tracks.module.scss"
 import TrackList from "@/components/TrackList";
@@ -22,6 +21,8 @@ function Playlists() {
   const playlistRef = useRef(null)
   const modalRef = useRef(null)
   const [asd, setAsd] = useState(-1)
+  const [modalTracks, setModalTracks] = useState(false)
+  const [modalWarning, setModalWarning] = useState(false)
 
   const renderPlaylists = () => store.data.map((e, playlist_id) => {
     // function countNes() {
@@ -54,11 +55,11 @@ function Playlists() {
         <div ref={playlistRef} className={styles.playlistContainer}>
           <div className={styles.playlistCover}>{e.playlist}</div>
           <span>{sim > 0 ? `${sim} треков из ${e.tracks.length} несовпадают` : 'ㅤ'}</span>
-          <button onClick={() => {ModalStore.open(); setOpenPlaylist(playlist_id)}} className={styles.button_open} disabled={is_published || store.isLoadCreate.includes(playlist_id)}>Открыть</button>
+          <button onClick={() => {setModalTracks(true); setOpenPlaylist(playlist_id)}} className={styles.button_open} disabled={is_published || store.isLoadCreate.includes(playlist_id)}>Открыть</button>
           {/* {openPlaylist == playlist_id &&
             <Modal openPlaylist={openPlaylist} playlist_id={playlist_id} >{tracks(playlist_id)}</Modal>
           } */}
-              <Modal nodeRef={modalRef} uslovie={openPlaylist == playlist_id && ModalStore.isOpen}>{tracks(playlist_id)}</Modal>
+              {modalTracks && <Modal setModal={setModalTracks} nodeRef={modalRef} uslovie={openPlaylist == playlist_id && modalTracks}>{tracks(playlist_id)}</Modal>}
           {/* <button onClick={() => {ModalStore.open(); setOpenPlaylist(`spotify-${playlist_id}`)}} className={styles.button}>добавить на Spotify</button> */}
           {/* store.createPlaylist(playlist_id) */}
           {is_published ? 
@@ -68,11 +69,11 @@ function Playlists() {
             </div> : 
             <button onClick={() => {
               if (sim) {
-                setOpenPlaylist(`spotify-${playlist_id}`); ModalStore.open()
+                setOpenPlaylist(`spotify-${playlist_id}`); setModalWarning(true)
               } else {store.createPlaylist(playlist_id)}
             }} className={styles.button} disabled={store.isLoadCreate.includes(playlist_id)} >{store.isLoadCreate.includes(playlist_id) ? <Loading /> : `Добавить на Spotify`}</button>
           }
-            <Modal nodeRef={modalRef} uslovie={openPlaylist == `spotify-${playlist_id}` && ModalStore.isOpen}>
+            <Modal setModal={setModalWarning} nodeRef={modalRef} uslovie={openPlaylist == `spotify-${playlist_id}` && modalWarning}>
               <Warning playlist_id={playlist_id}/>
             </Modal>
         </div>

@@ -1,8 +1,6 @@
 import store from "@/store/store";
 import DragDrop from "@/components/DragDrop";
 import * as styles from "@/css/data.module.scss"
-import ModalStore from "@/store/ModalStore";
-import Modal from "@/components/Modal";
 import * as styles_tracks from "@/css/tracks.module.scss"
 import TrackList from "@/components/TrackList";
 import { observer } from "mobx-react-lite";

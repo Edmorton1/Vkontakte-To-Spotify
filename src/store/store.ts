@@ -224,6 +224,7 @@ class Store {
 ]
   isLoad = false
   isLoadCreate: number[] = []
+  error: Error | null = null
 
   async checkRefreshToken() {
     const request = await $api.get('http://localhost:3000/api/checkRefreshToken')

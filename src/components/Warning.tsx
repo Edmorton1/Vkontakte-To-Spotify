@@ -1,6 +1,5 @@
 import TransitionShablon from "@/components/TransitionShablon"
 import * as style from "@/css/warning.module.scss"
-import ModalStore from "@/store/ModalStore"
 import store from "@/store/store"
 import { useRef } from "react"
 
