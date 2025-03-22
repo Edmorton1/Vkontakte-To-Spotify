@@ -71,7 +71,7 @@ class SpotifyModel {
     }
     const first = await getResponse(`${artist} ${name}`)
     console.log('фирст')
-    // await delay(1000)
+    await delay(1000)
     console.log('секонд')
     const second = await getResponse(name)
     const total = [first, second].sort((a: trackInterfaceWithSim, b: trackInterfaceWithSim) => (b.sim_total) - (a.sim_total))[0]

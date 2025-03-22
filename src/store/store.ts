@@ -1,4 +1,5 @@
 import $api from "@/store/$api";
+import { delay } from "@s/router/functions";
 import { SpotifyDataInterface } from "@s/router/types";
 import { action, makeAutoObservable, runInAction, toJS } from "mobx";
 
@@ -12,17 +13,18 @@ class Store {
   data: SpotifyDataInterface[] = [
     {
         "playlist": "аниме2",
+        "is_published": false,
         "tracks": [
             {
                 "vk_name": "[Скитальцы] 1 Опенинг",
-                "spotify_name": "SVARS",
-                "name_sim": 0,
+                "spotify_name": "1 Op 1",
+                "name_sim": 0.52,
                 "vk_artist": "Drifters -OP 1",
                 "sim_event": true,
-                "spotify_artist": "BANDA BANDA",
+                "spotify_artist": "Kav Verhouzer",
                 "arist_sim": 0,
-                "id": "2Pxf4He2VkSo1k4aLFJAhO",
-                "url": "https://open.spotify.com/track/2Pxf4He2VkSo1k4aLFJAhO"
+                "id": "7l0MFTZCKNscxlbpleneJ5",
+                "url": "https://open.spotify.com/track/7l0MFTZCKNscxlbpleneJ5"
             },
             {
                 "vk_name": "BEYOND",
@@ -52,10 +54,10 @@ class Store {
                 "name_sim": 0.63,
                 "vk_artist": "UmedaCypher",
                 "sim_event": true,
-                "spotify_artist": "梅田サイファー",
+                "spotify_artist": "Curtis Cole",
                 "arist_sim": 0,
-                "id": "5UUQjdgSOoJUGgciuFHDkP",
-                "url": "https://open.spotify.com/track/5UUQjdgSOoJUGgciuFHDkP"
+                "id": "62816BBnjaPFdrk4BXHuiN",
+                "url": "https://open.spotify.com/track/62816BBnjaPFdrk4BXHuiN"
             },
             {
                 "vk_name": "forever we can make it! (любовные неприятности)",
@@ -92,19 +94,20 @@ class Store {
             },
             {
                 "vk_name": "Koko kara Saki wa Uta ni Naranai",
-                "spotify_name": "Koko ni Arukoto",
-                "name_sim": 0.44,
+                "spotify_name": "GATE ~Sore wa Akatsuki no you ni~ (dj-Jo Remix)",
+                "name_sim": 0.25,
                 "vk_artist": "Poppin' Party",
                 "sim_event": true,
-                "spotify_artist": "Soraru",
+                "spotify_artist": "dj-Jo",
                 "arist_sim": 0,
-                "id": "3fBHeslrgnY1vcVEONsWzt",
-                "url": "https://open.spotify.com/track/3fBHeslrgnY1vcVEONsWzt"
+                "id": "1vBNGu1fZPQUChrCgKlJY3",
+                "url": "https://open.spotify.com/track/1vBNGu1fZPQUChrCgKlJY3"
             }
         ]
     },
     {
         "playlist": "Blur",
+        "is_published": false,
         "tracks": [
             {
                 "vk_name": "Girls & Boys",
@@ -220,19 +223,24 @@ class Store {
     }
 ]
   isLoad = false
+  isLoadCreate: number[] = []
 
   async checkRefreshToken() {
     const request = await $api.get('http://localhost:3000/api/checkRefreshToken')
     return runInAction(() => request.data)
   }
   loadPlaylists = action(async (formData: FormData, setShowBlock: Function) => {
-    this.isLoad = true
-    const data = await (await $api.post(`http://localhost:3000/api/take`, formData)).data
-    // store.loadPlaylists(request.data)
-    console.log(data)
-    this.data.push(...data)
-    this.isLoad = false
-    setShowBlock(false)
+    try {
+      this.isLoad = true
+      const data = await (await $api.post(`http://localhost:3000/api/take`, formData)).data
+      // store.loadPlaylists(request.data)
+      console.log(data)
+      this.data.push(...data)
+      this.isLoad = false
+      setShowBlock(false)
+    } catch {
+      this.isLoad = false
+    }
   })
   setPlaylist = (index: number) => {
     return this.data[index]
@@ -242,6 +250,7 @@ class Store {
       const body = {[changeType]: changeValue}
       const request = await $api.put(`http://localhost:3000/api/updateTrack/${playlist}/${track}`, body)
       if (changeType == 'url') {
+        console.log(request.data)
         this.data[playlist].tracks[track] = request.data
       }
       if (changeType == 'sim_event') {
@@ -252,6 +261,22 @@ class Store {
         console.log(toJS(this.data[playlist].tracks))
       }
   })
+  createPlaylist = action(
+    async (playlist_id: number, clean?: boolean) => {
+      const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+      this.isLoadCreate.push(playlist_id)
+      console.log(this.isLoadCreate)
+      await delay(3000)
+      this.data[playlist_id].is_published = true
+      this.isLoadCreate = this.isLoadCreate.filter(e => e != playlist_id)
+      console.log(this.isLoadCreate)
+    }
+  )
+  removePlaylist = action(
+    async (playlist_id: number) => {
+      this.data[playlist_id].is_published = false
+    }
+  )
 }
 
 export default new Store()

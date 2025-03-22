@@ -44,12 +44,34 @@ $playlist_width: 345px;
   font-size: 30px;
   transition: 0.1s linear;
 }
+.button:disabled {
+  background-color: #5B5B5B !important;
+  color: #B6B6B6;
+}
+.button:disabled:hover {
+  transform: scale(1);
+  cursor: auto;
+}
 .button:hover{
   // background-color: red !important;
   transform: scale(1.03)
 }
 .button_open {
   @extend .button;
+}
+.added {
+  // background-color: red;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  // align-items: center;
+  // justify-content: space-between;
+  
+  .button {
+    background-color: var(--change-color);
+    font-size: 25px;
+    width: calc($playlist_width / 2.04);
+  }
 }
 
 $colors: 

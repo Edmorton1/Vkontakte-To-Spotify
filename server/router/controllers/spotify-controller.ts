@@ -52,42 +52,65 @@ class SpotifyController {
         if (!req.files || !Array.isArray(req.files)) {
             return res.status(400).json({ message: "Файлы не загружены" });
         }
-        const files = req.files.map(e => {
-            const buffer = Buffer.from(e.fieldname, 'latin1')
-            return [buffer.toString('utf-8').slice(0, -5), e.buffer.toString('utf-8')]
-        })
-
-        const total: SpotifyDataInterface[] = []
-        for (let file of files) {
-            const $ = cheerio.load(file[1])
-            const tracksElements =  chunkArray($('.audio_row__performer_title').toArray())
-            const playlist: {playlist: string, tracks: trackInterface[]} = {
-                playlist: file[0],
-                tracks: []
+        try {
+            const files = req.files.map(file => {
+                if (file.mimetype != 'text/html') {
+                    throw new Error('EXTENSION ERROR')
+                }
+                const buffer = Buffer.from(file.fieldname, 'latin1')
+                return [buffer.toString('utf-8').split('.').slice(0, -1).join('.'), file.buffer.toString('utf-8')]
+            })
+    
+            const total: SpotifyDataInterface[] = []
+            for (let file of files) {
+                const $ = cheerio.load(file[1])
+                const tracksElements =  chunkArray($('.audio_row__performer_title').toArray())
+                const playlist: SpotifyDataInterface = {
+                    playlist: file[0],
+                    is_published: false,
+                    tracks: []
+                }
+    
+                for (let trackPack of tracksElements) {
+                    (tracksElements.length > 2 && await delay(5000))
+                    const tracks: trackInterface[] = await Promise.all(trackPack.map(async e => {
+                        const artist = $(e).find('.artist_link').text().trim()
+                        const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()
+                        if (name && artist) {
+                            return await SpotifyModel.take(artist, name)
+                        }
+                        return null
+                    })
+                )
+                playlist.tracks.push(...tracks)
+                }
+                total.push(playlist)
             }
-
-            for (let trackPack of tracksElements) {
-                (tracksElements.length > 1 && await delay(5000))
-                const tracks: trackInterface[] = await Promise.all(trackPack.map(async e => {
-                    const artist = $(e).find('.artist_link').text().trim()
-                    const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()
-                    if (name && artist) {
-                        return await SpotifyModel.take(artist, name)
-                    }
-                    return null
-                })
-            )
-            playlist.tracks.push(...tracks)
-            }
-            total.push(playlist)
+            res.json(total)
+            user_data.push(...total)
+            console.log(total)
+            return total
+        } catch(err) {
+            console.log(err)
+            res.status(400)
         }
-        res.json(total)
-        user_data.push(...total)
-        console.log(total)
-        return total
     }
     createAllPlaylists = async (req: Request, res: Response) => {
-        // await $spotifyPost.get(`${process.env.URL_SERVER}/getSpotifyTracks`)
+        // // await $spotifyPost.get(`${process.env.URL_SERVER}/getSpotifyTracks`)
+        // for (const playlist of user_data) {
+        //     const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
+        //         name: playlist.playlist,
+        //         description: playlist.playlist,
+        //         public: true
+        //     })
+        //     const playlist_id = spotify_playlist.data.id
+        //     const body = {uris: playlist.tracks.map(track => {
+        //         return `spotify:track:${track.id}`
+        //     })}
+        //     console.log(body)
+        //     await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
+        // }
+        // res.json(user_data)
         for (const playlist of user_data) {
             const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
                 name: playlist.playlist,
@@ -95,11 +118,16 @@ class SpotifyController {
                 public: true
             })
             const playlist_id = spotify_playlist.data.id
-            const body = {uris: playlist.tracks.map(track => {
-                return `spotify:track:${track.id}`
-            })}
-            console.log(body)
-            await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
+            const tracks = chunkArray(playlist.tracks, 99)
+            for (let chunk of tracks) {
+                await delay(500)
+                const body = {uris: chunk.map(track => {
+                    return `spotify:track:${track.id}`
+                })}
+                console.log(body)
+                await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
+            }
+
         }
         res.json(user_data)
     }
@@ -115,33 +143,38 @@ class SpotifyController {
         // })
     }
     updateTrack = async (req: Request, res: Response) => {
-        const playlist = Number(req.params.playlist)
-        const track = Number(req.params.track)
-        const methond = Object.keys(req.body)[0] as 'url' | 'sim_event' | 'delete'
-        console.log(req.body)
-        if (methond == 'url') {
-            const url = req.body.url.split('/').pop()
-            const response = (await $spotify(`https://api.spotify.com/v1/tracks/${url}`)).data as spotifyTrackDataInterface
-            const result: trackInterface = {
-                vk_name: null,
-                spotify_name: response.name,
-                name_sim: null,
-                vk_artist: null,
-                sim_event: false,
-                spotify_artist: response.artists[0].name,
-                arist_sim: null,
-                id: response.id,
-                url: response.external_urls.spotify,
+        try {
+            const playlist = Number(req.params.playlist)
+            const track = Number(req.params.track)
+            const methond = Object.keys(req.body)[0] as 'url' | 'sim_event' | 'delete'
+            console.log(req.body)
+            if (methond == 'url') {
+                const url = req.body.url.split('/').pop()
+                const response = (await $spotify(`https://api.spotify.com/v1/tracks/${url}`)).data as spotifyTrackDataInterface
+                const result: trackInterface = {
+                    vk_name: null,
+                    spotify_name: response.name,
+                    name_sim: null,
+                    vk_artist: null,
+                    sim_event: false,
+                    spotify_artist: response.artists[0].name,
+                    arist_sim: null,
+                    id: response.id,
+                    url: response.external_urls.spotify,
+                }
+                user_data[playlist].tracks[track] = result
             }
-            user_data[playlist].tracks[track] = result
+            if (methond == 'sim_event') {
+                user_data[playlist].tracks[track][methond] = false
+            }
+            if (methond == 'delete') {
+                user_data[playlist].tracks.splice(track, 1)
+            }
+            res.json(user_data[playlist].tracks[track])
         }
-        if (methond == 'sim_event') {
-            user_data[playlist].tracks[track][methond] = false
+        catch(err) {
+            console.log(err)
         }
-        if (methond == 'delete') {
-            user_data[playlist].tracks.splice(track, 1)
-        }
-        res.json(user_data[playlist].tracks[track])
     }
 }
 

@@ -29,5 +29,6 @@ export interface trackInterface {
 
 export interface SpotifyDataInterface {
   playlist: string;
+  is_published: boolean;
   tracks: trackInterface[];
 }

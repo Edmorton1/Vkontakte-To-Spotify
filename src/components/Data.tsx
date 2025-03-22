@@ -9,9 +9,9 @@ import { observer } from "mobx-react-lite";
 import { useRef, useState } from "react";
 import Block from "@/components/Block";
 import * as styles_drop from "@/css/dragDrop.module.scss"
-import loader from "@/assets/loader.png"
 import TransitionShablon from "@/components/TransitionShablon";
 import Playlists from "@/components/Playlists";
+import Loading from "@/components/Loading";
 
 function Data() {
   const [openPlaylist, setOpenPlaylist] = useState(0)
@@ -35,7 +35,7 @@ function Data() {
       {event.preventDefault(); if (!event.relatedTarget || !document.getElementsByClassName(styles.main)[0].contains(event.relatedTarget as Node)) setShowBlock(false)}}>
       <Playlists />
       <TransitionShablon nodeRef={nodeRef} inside={showBlock} >
-        <Block><div ref={nodeRef} className={`${styles_drop.block} ${styles.playlistContainer}`}>{store.isLoad ? <img src={loader} className={styles_drop.loader} /> : `Новый плейлист`}</div></Block>
+        <Block><div ref={nodeRef} className={`${styles_drop.block} ${styles.playlistContainer}`}>{store.isLoad ? <Loading /> : `Новый плейлист`}</div></Block>
       </TransitionShablon>
       {/* <DragDrop /> */}
     </main>

@@ -4,7 +4,7 @@ $img-margin: $img-size + 15px;
 
 .tracks {
   // margin-top: 10%;
-  background-color: #282828;
+  background-color: var(--modal_back);
   // width: 50%;
   display: flex;
   flex-direction: column;
