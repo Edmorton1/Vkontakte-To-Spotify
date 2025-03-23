@@ -1,7 +1,8 @@
 import $api from "@/store/$api";
+import ErrorStore from "@/store/ErrorStore";
 import { delay } from "@s/router/functions";
 import { SpotifyDataInterface } from "@s/router/types";
-import { action, makeAutoObservable, runInAction, toJS } from "mobx";
+import { action, makeAutoObservable, observable, runInAction, toJS } from "mobx";
 
 type changeTypes = | `sim_event` | 'url' | 'delete'
 
@@ -224,58 +225,86 @@ class Store {
 ]
   isLoad = false
   isLoadCreate: number[] = []
-  error: Error | null = null
 
   async checkRefreshToken() {
     const request = await $api.get('http://localhost:3000/api/checkRefreshToken')
     return runInAction(() => request.data)
   }
+
   loadPlaylists = action(async (formData: FormData, setShowBlock: Function) => {
     try {
       this.isLoad = true
-      const data = await (await $api.post(`http://localhost:3000/api/take`, formData)).data
+      const data: SpotifyDataInterface[] = await (await $api.post(`http://localhost:3000/api/take`, formData, {
+        onUploadProgress: (progressEvent) => {
+          console.log(`Загружено: ${progressEvent.loaded} из ${progressEvent.total} байт`);
+        }
+      })).data
       // store.loadPlaylists(request.data)
       console.log(data)
-      this.data.push(...data)
+    
+      const cleanData =data.filter(e => {
+        return e.tracks.length > 0 ? true : ErrorStore.setError(new Error('Один или несколько файлов оказались пустыми'))
+      })
+
+      this.data.push(...cleanData)
+    } catch(err) {
+      console.log(err)
+      ErrorStore.setError(new Error('Не удалось выполнить операцию. Плейлсит должен быть обязательно в формате HTML или TXT'))
+    } finally {
       this.isLoad = false
       setShowBlock(false)
-    } catch {
-      this.isLoad = false
     }
   })
+
   setPlaylist = (index: number) => {
     return this.data[index]
   }
+
   updateTracks = action(
     async(playlist: number, track: number, changeType: changeTypes, changeValue: string = '') => {
-      const body = {[changeType]: changeValue}
-      const request = await $api.put(`http://localhost:3000/api/updateTrack/${playlist}/${track}`, body)
-      if (changeType == 'url') {
-        console.log(request.data)
-        this.data[playlist].tracks[track] = request.data
-      }
-      if (changeType == 'sim_event') {
-        this.data[playlist].tracks[track].sim_event = false
-      }
-      if (changeType == 'delete') {
-        this.data[playlist].tracks.splice(0, 1)
-        console.log(toJS(this.data[playlist].tracks))
+      try {
+        const body = {[changeType]: changeValue}
+        const request = await $api.put(`http://localhost:3000/api/updateTrack/${playlist}/${track}`, body)
+        if (changeType == 'url') {
+          console.log(request.data)
+          this.data[playlist].tracks[track] = request.data
+        }
+        if (changeType == 'sim_event') {
+          this.data[playlist].tracks[track].sim_event = false
+        }
+        if (changeType == 'delete') {
+          this.data[playlist].tracks.splice(0, 1)
+          console.log(toJS(this.data[playlist].tracks))
+        }
+      } catch(err) {
+        console.log(err)
+        ErrorStore.setError(new Error('Не удалось выполнить операцию, попробуйте ещё раз'))
       }
   })
   createPlaylist = action(
     async (playlist_id: number, clean?: boolean) => {
-      const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-      this.isLoadCreate.push(playlist_id)
-      console.log(this.isLoadCreate)
-      await delay(3000)
-      this.data[playlist_id].is_published = true
-      this.isLoadCreate = this.isLoadCreate.filter(e => e != playlist_id)
-      console.log(this.isLoadCreate)
+      try {
+        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+        this.isLoadCreate.push(playlist_id)
+        console.log(this.isLoadCreate)
+        await delay(3000)
+        this.data[playlist_id].is_published = true
+        this.isLoadCreate = this.isLoadCreate.filter(e => e != playlist_id)
+        console.log(this.isLoadCreate)
+      } catch(err) {
+        console.log(err)
+        ErrorStore.setError(new Error('Не удалось создать плейлист, попробуйте ещё раз'))
+      }
     }
   )
   removePlaylist = action(
     async (playlist_id: number) => {
-      this.data[playlist_id].is_published = false
+      try {
+        this.data[playlist_id].is_published = false
+      } catch(err) {
+        console.log(err)
+        ErrorStore.setError(new Error('Не удалось вернуть плейлист, попробуйте ещё раз'))
+      }
     }
   )
 }

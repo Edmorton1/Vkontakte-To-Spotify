@@ -41,11 +41,16 @@ class SpotifyController {
     // }
 
     async getCallback(req: Request, res: Response) {
-        const code = req.query.code as string
-        const state = req.query.state as string
-        const request = await SpotifyModel.getCallback(code, state) as userTokens
-        res.cookie('spotify_refresh_token', request.refresh_token, {httpOnly: true, secure: true, sameSite: 'lax'})
-        res.redirect(process.env.URL_CLIENT)
+        try {
+            const code = req.query.code as string
+            const state = req.query.state as string
+            const request = await SpotifyModel.getCallback(code, state) as userTokens
+            res.cookie('spotify_refresh_token', request.refresh_token, {httpOnly: true, secure: true, sameSite: 'lax'})
+            res.redirect(process.env.URL_CLIENT)
+        } catch(err) {
+            console.log(err)
+            res.status(500).json('Ошибка получения данных Spotify')
+        }
     }
 
     take = async (req: Request, res: Response) => {
@@ -92,7 +97,7 @@ class SpotifyController {
             return total
         } catch(err) {
             console.log(err)
-            res.status(400)
+            res.status(500).json(err)
         }
     }
     createAllPlaylists = async (req: Request, res: Response) => {
@@ -111,37 +116,44 @@ class SpotifyController {
         //     await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
         // }
         // res.json(user_data)
-        for (const playlist of user_data) {
-            const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
-                name: playlist.playlist,
-                description: playlist.playlist,
-                public: true
-            })
-            const playlist_id = spotify_playlist.data.id
-            const tracks = chunkArray(playlist.tracks, 99)
-            for (let chunk of tracks) {
-                await delay(500)
-                const body = {uris: chunk.map(track => {
-                    return `spotify:track:${track.id}`
-                })}
-                console.log(body)
-                await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
+        try {
+            for (const playlist of user_data) {
+                const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
+                    name: playlist.playlist,
+                    description: playlist.playlist,
+                    public: true
+                })
+                const playlist_id = spotify_playlist.data.id
+                const tracks = chunkArray(playlist.tracks, 99)
+                for (let chunk of tracks) {
+                    await delay(500)
+                    const body = {uris: chunk.map(track => {
+                        return `spotify:track:${track.id}`
+                    })}
+                    console.log(body)
+                    await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
+                }
+    
             }
-
+            res.json(user_data)
+        } catch(err) {
+            console.log(err)
+            res.status(500).json(err)
         }
-        res.json(user_data)
     }
-    static async testAsync() {
-        return 10
-    }
-    test = async (req: Request, res: Response) => {
-        const qwe = await $spotify.get(`https://api.spotify.com/v1/search?q=Welcome to Jungle&type=track&limit=1`)
-        res.json(qwe.data)
-        // res.json(qwe.data())
-        // arr.map(() => {
-        //     console.log(Math.round(Math.random() * 50000) + 1000)
-        // })
-    }
+
+    // static async testAsync() {
+    //     return 10
+    // }
+    // test = async (req: Request, res: Response) => {
+    //     const qwe = await $spotify.get(`https://api.spotify.com/v1/search?q=Welcome to Jungle&type=track&limit=1`)
+    //     res.json(qwe.data)
+    //     // res.json(qwe.data())
+    //     // arr.map(() => {
+    //     //     console.log(Math.round(Math.random() * 50000) + 1000)
+    //     // })
+    // }
+
     updateTrack = async (req: Request, res: Response) => {
         try {
             const playlist = Number(req.params.playlist)
@@ -174,6 +186,7 @@ class SpotifyController {
         }
         catch(err) {
             console.log(err)
+            res.status(500).json(err)
         }
     }
 }

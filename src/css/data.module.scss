@@ -22,14 +22,17 @@ $playlist_width: 345px;
   align-items: center;
   width: $playlist_width;
   height: 340px;
+  // overflow-wrap: break-word;
   // background-color: var(--bg_color);
 }
 .playlistCover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   height: 218px;
   width: $playlist_width;
-  text-align: center;
   text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-  line-height: 218px;
   font-size: 64px;
   border-radius: $border_radius;
   overflow: hidden;

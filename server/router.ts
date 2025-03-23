@@ -12,7 +12,7 @@ router.get('/checkRefreshToken', SpotifyMiddlewares.checkRefreshToken)
 router.get('/createAllPlaylists', SpotifyMiddlewares.setUserAccessTokenMiddleware, SpotifyController.createAllPlaylists)
 router.post('/take', SpotifyMiddlewares.setUserAccessTokenMiddleware, upload.any(), SpotifyController.take)
 router.put('/updateTrack/:playlist/:track', SpotifyController.updateTrack)
-router.get('/test', SpotifyController.test)
+// router.get('/test', SpotifyController.test)
 // router.get('/getVkData/:params', vkController.getVkData)
 // router.get('/getSpotifyTracks', SpotifyMiddlewares.setUserAccessTokenMiddleware, SpotifyController.getSpotifyTracks)
 

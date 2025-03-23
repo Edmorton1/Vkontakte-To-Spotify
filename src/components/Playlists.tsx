@@ -14,6 +14,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group"
 import * as animations from "@/css/animations/animations.module.scss"
 import Warning from "@/components/Warning";
 import Loading from "@/components/Loading";
+import Progress from "@/components/Progress";
 // import * as cross from "@/assets/cross.png"
 
 function Playlists() {
@@ -55,11 +56,12 @@ function Playlists() {
         <div ref={playlistRef} className={styles.playlistContainer}>
           <div className={styles.playlistCover}>{e.playlist}</div>
           <span>{sim > 0 ? `${sim} треков из ${e.tracks.length} несовпадают` : 'ㅤ'}</span>
+          <Progress />
           <button onClick={() => {setModalTracks(true); setOpenPlaylist(playlist_id)}} className={styles.button_open} disabled={is_published || store.isLoadCreate.includes(playlist_id)}>Открыть</button>
           {/* {openPlaylist == playlist_id &&
             <Modal openPlaylist={openPlaylist} playlist_id={playlist_id} >{tracks(playlist_id)}</Modal>
           } */}
-              {modalTracks && <Modal setModal={setModalTracks} nodeRef={modalRef} uslovie={openPlaylist == playlist_id && modalTracks}>{tracks(playlist_id)}</Modal>}
+              <Modal setModal={setModalTracks} nodeRef={modalRef} uslovie={openPlaylist == playlist_id && modalTracks}>{tracks(playlist_id)}</Modal>
           {/* <button onClick={() => {ModalStore.open(); setOpenPlaylist(`spotify-${playlist_id}`)}} className={styles.button}>добавить на Spotify</button> */}
           {/* store.createPlaylist(playlist_id) */}
           {is_published ? 

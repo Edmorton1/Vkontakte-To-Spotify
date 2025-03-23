@@ -33,7 +33,7 @@ function Data() {
       {event.preventDefault(); if (!event.relatedTarget || !document.getElementsByClassName(styles.main)[0].contains(event.relatedTarget as Node)) setShowBlock(false)}}>
       <Playlists />
       <TransitionShablon nodeRef={nodeRef} inside={showBlock} >
-        <Block><div ref={nodeRef} className={`${styles_drop.block} ${styles.playlistContainer}`}>{store.isLoad ? <Loading /> : `Новый плейлист`}</div></Block>
+        <Block><div ref={nodeRef} style={{justifyContent: "center"}} className={`${styles_drop.block} ${styles.playlistContainer}`}>{store.isLoad ? <Loading /> : `Новый плейлист`}</div></Block>
       </TransitionShablon>
       {/* <DragDrop /> */}
     </main>
