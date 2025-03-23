@@ -1,0 +1,71 @@
+[33mcommit 82eb7f3c1ca6226b64c35fb1e6eb34ddfe23bc82[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Sun Mar 23 14:30:41 2025 +0500
+
+    loading bar
+
+[33mcommit dc1f7c152ef54911e385272f623919a2f08470d3[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Sat Mar 22 20:43:43 2025 +0500
+
+    error handling 2 & modal refactoring
+
+[33mcommit 9992707707b4b11af88cee96620891975bbce237[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Sat Mar 22 16:44:25 2025 +0500
+
+    error handling
+
+[33mcommit 965d0df6a7949221a48e9c4949a7792ac771109d[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Fri Mar 21 14:09:17 2025 +0500
+
+    modal animation
+
+[33mcommit ea2efcd850e6384c2544f59264fa17eab9956cb8[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Fri Mar 21 11:46:36 2025 +0500
+
+    gradient background
+
+[33mcommit e04ff542c20fdaa06aafd849f42829dd0762292a[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Thu Mar 20 20:48:47 2025 +0500
+
+    transition group test
+
+[33mcommit 527bed5db7e538a8002580d548067f3ad8cad30f[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Wed Mar 19 17:56:48 2025 +0500
+
+    modal fix
+
+[33mcommit b0dee17a1c0d25bdd25075bc5fa6a77a49f1b357[m
+Author: Kirill <ghettoboy2106@gmail.com>
+Date:   Wed Mar 19 11:43:03 2025 +0500
+
+    notebuk
+
+[33mcommit 272e443c46afd725a4286c8b1dc0b320d48b1e75[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Wed Mar 19 00:01:25 2025 +0500
+
+    tracks
+
+[33mcommit 2ae7b8aaa490faded636d4b3b727903af1218781[m
+Author: Kirill <ghettoboy2106@gmail.com>
+Date:   Tue Mar 18 15:41:10 2025 +0500
+
+    modal
+
+[33mcommit 72fd680b741867ac2e9387445ed50eb670ea8c64[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Mon Mar 17 22:52:46 2025 +0500
+
+    design
+
+[33mcommit d0d6732dfcad63d3c9811a91fbbe13f934b9996d[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Kirill Ryaska <ghettoboy2106@gmail.com>
+Date:   Mon Mar 17 15:45:37 2025 +0500
+
+    cleaning

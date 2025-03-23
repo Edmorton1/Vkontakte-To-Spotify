@@ -142,18 +142,6 @@ class SpotifyController {
         }
     }
 
-    // static async testAsync() {
-    //     return 10
-    // }
-    // test = async (req: Request, res: Response) => {
-    //     const qwe = await $spotify.get(`https://api.spotify.com/v1/search?q=Welcome to Jungle&type=track&limit=1`)
-    //     res.json(qwe.data)
-    //     // res.json(qwe.data())
-    //     // arr.map(() => {
-    //     //     console.log(Math.round(Math.random() * 50000) + 1000)
-    //     // })
-    // }
-
     updateTrack = async (req: Request, res: Response) => {
         try {
             const playlist = Number(req.params.playlist)
