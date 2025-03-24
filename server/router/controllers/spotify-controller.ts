@@ -9,6 +9,7 @@ import path from 'path'
 import fs from 'fs/promises'
 import { user_data, user_id } from "@s/router/db"
 import $spotify from "@s/router/axios/$spotify"
+import WebsocketController from "@s/router/controllers/websocket-controller"
 
 class SpotifyController {
     // async getSpotifyData(req: Request, res: Response) {
@@ -58,18 +59,24 @@ class SpotifyController {
             return res.status(400).json({ message: "Файлы не загружены" });
         }
         try {
+            // WebsocketController.sendmessage('zaebal')
             const files = req.files.map(file => {
                 if (file.mimetype != 'text/html') {
                     throw new Error('EXTENSION ERROR')
                 }
                 const buffer = Buffer.from(file.fieldname, 'latin1')
                 return [buffer.toString('utf-8').split('.').slice(0, -1).join('.'), file.buffer.toString('utf-8')]
-            })
-    
+            }).sort((a, b) => a[1].length - b[1].length)
+            
+            let count = files.length
+            WebsocketController.setLoadFiles(files.length)
             const total: SpotifyDataInterface[] = []
+
             for (let file of files) {
+                count--
                 const $ = cheerio.load(file[1])
                 const tracksElements =  chunkArray($('.audio_row__performer_title').toArray())
+                let trackState = 0;
                 const playlist: SpotifyDataInterface = {
                     playlist: file[0],
                     is_published: false,
@@ -82,18 +89,24 @@ class SpotifyController {
                         const artist = $(e).find('.artist_link').text().trim()
                         const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()
                         if (name && artist) {
-                            return await SpotifyModel.take(artist, name)
+                            const result = await SpotifyModel.take(artist, name)
+                            trackState++
+                            console.log(Math.round(trackState / tracksElements.flat(Infinity).length))
+                            WebsocketController.setLoading(trackState / tracksElements.flat(Infinity).length)
+                            return result
                         }
                         return null
                     })
                 )
                 playlist.tracks.push(...tracks)
                 }
-                total.push(playlist)
+                // total.push(playlist)
+                WebsocketController.pushToDB(playlist)
+                WebsocketController.setLoadFiles(count)
             }
             res.json(total)
-            user_data.push(...total)
-            console.log(total)
+            // user_data.push(...total)
+            // console.log(total)
             return total
         } catch(err) {
             console.log(err)

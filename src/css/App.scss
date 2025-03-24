@@ -70,3 +70,25 @@ a {
 button {
     cursor: pointer;
 }
+
+$progress-radius: 50px;
+
+progress {
+  margin-top: 10%;
+  appearance: none;
+  width: 92%;
+  height: 25px;
+}
+  
+progress::-webkit-progress-bar {
+  background-color: rgb(226, 226, 226);
+  border-radius: $progress-radius;
+  border: 2px solid black;
+}
+  
+progress::-webkit-progress-value {
+  background-color: #ACACAC;
+  border-radius: $progress-radius;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}

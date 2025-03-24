@@ -5,22 +5,13 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import http from "http";
 import WebSocket from "ws";
+import createWebSocketServer from "@s/webSocket";
 
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
-
-wss.on("connection", (ws) => {
-    console.log("Клиент подключился");
-    
-    ws.send('Ты подключился')
-
-    ws.on('message', (message: Base64URLString) => {
-        console.log(message.toString())
-    })
-});
+const wss = createWebSocketServer(server)
 
 app.use(express.json());
 app.use(cookieParser());
@@ -38,3 +29,5 @@ app.use("/api", router);
 server.listen(PORT, () => {
   console.log(`СЕРВЕР ЗАПУШЕН НА ПОРТУ ${PORT}...`);
 });
+
+export { wss }

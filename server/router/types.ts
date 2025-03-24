@@ -32,3 +32,8 @@ export interface SpotifyDataInterface {
   is_published: boolean;
   tracks: trackInterface[];
 }
+
+export interface WebSocketInterface {
+  type: string,
+  data: any
+}

@@ -8,17 +8,16 @@ import { useRef } from "react"
 import * as styles_drop from "@/css/dragDrop.module.scss"
 import store from "@/store/store"
 
-function Block() {
+function BlockAdding({showBlock}: {showBlock: boolean}) {
   const nodeRef = useRef(null)
 
   return (
-    <TransitionShablon nodeRef={nodeRef} inside={store.loadFiles > 0} >
+    <TransitionShablon nodeRef={nodeRef} inside={showBlock} >
       <div ref={nodeRef} style={{justifyContent: "center"}} className={`${styles_drop.block} ${styles.playlistContainer}`}>
-        <Loading />
-        <Progress/>
+        Новый плейлист
       </div>
     </TransitionShablon>
   )
 }
 
-export default observer(Block)
+export default observer(BlockAdding)

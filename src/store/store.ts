@@ -1,5 +1,6 @@
 import $api from "@/store/$api";
 import ErrorStore from "@/store/ErrorStore";
+import SocketStore from "@/store/SocketStore";
 import { delay } from "@s/router/functions";
 import { SpotifyDataInterface } from "@s/router/types";
 import { action, makeAutoObservable, observable, runInAction, toJS } from "mobx";
@@ -8,7 +9,8 @@ type changeTypes = | `sim_event` | 'url' | 'delete'
 
 class Store {
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this),
+    SocketStore.connect()
   }
   // data: SpotifyDataInterface[] = []
   data: SpotifyDataInterface[] = [
@@ -223,8 +225,14 @@ class Store {
         ]
     }
 ]
-  isLoad = false
   isLoadCreate: number[] = []
+  loadFiles: number = 0
+  loadProgress: number = 0
+  // socket: WebSocket | null = null
+
+  pushData = (data: SpotifyDataInterface) => {
+    runInAction(() => this.data.push(data))
+  }
 
   async checkRefreshToken() {
     const request = await $api.get('http://localhost:3000/api/checkRefreshToken')
@@ -233,25 +241,14 @@ class Store {
 
   loadPlaylists = action(async (formData: FormData, setShowBlock: Function) => {
     try {
-      this.isLoad = true
-      const data: SpotifyDataInterface[] = await (await $api.post(`http://localhost:3000/api/take`, formData, {
-        onUploadProgress: (progressEvent) => {
-          console.log(`Загружено: ${progressEvent.loaded} из ${progressEvent.total} байт`);
-        }
-      })).data
-      // store.loadPlaylists(request.data)
-      console.log(data)
-    
-      const cleanData =data.filter(e => {
-        return e.tracks.length > 0 ? true : ErrorStore.setError(new Error('Один или несколько файлов оказались пустыми'))
-      })
-
-      this.data.push(...cleanData)
+      console.log(formData)
+      // this.loadFiles = true
+      await $api.post(`http://localhost:3000/api/take`, formData)
     } catch(err) {
       console.log(err)
       ErrorStore.setError(new Error('Не удалось выполнить операцию. Плейлсит должен быть обязательно в формате HTML или TXT'))
     } finally {
-      this.isLoad = false
+      // this.loadFiles = 0
       setShowBlock(false)
     }
   })
@@ -266,7 +263,7 @@ class Store {
         const body = {[changeType]: changeValue}
         const request = await $api.put(`http://localhost:3000/api/updateTrack/${playlist}/${track}`, body)
         if (changeType == 'url') {
-          console.log(request.data)
+          // console.log(request.data)
           this.data[playlist].tracks[track] = request.data
         }
         if (changeType == 'sim_event') {

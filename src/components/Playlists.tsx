@@ -56,7 +56,6 @@ function Playlists() {
         <div ref={playlistRef} className={styles.playlistContainer}>
           <div className={styles.playlistCover}>{e.playlist}</div>
           <span>{sim > 0 ? `${sim} треков из ${e.tracks.length} несовпадают` : 'ㅤ'}</span>
-          <Progress />
           <button onClick={() => {setModalTracks(true); setOpenPlaylist(playlist_id)}} className={styles.button_open} disabled={is_published || store.isLoadCreate.includes(playlist_id)}>Открыть</button>
           {/* {openPlaylist == playlist_id &&
             <Modal openPlaylist={openPlaylist} playlist_id={playlist_id} >{tracks(playlist_id)}</Modal>
