@@ -1,4 +1,4 @@
-import store from "@/store/store";
+// import store from "@/store/store";
 import { WebSocketInterface } from "@s/router/types";
 import { makeAutoObservable, runInAction } from "mobx"
 
@@ -11,7 +11,8 @@ class SocketStore {
     // this.connect()
   }
 
-  connect = () => {
+  connect = async () => {
+    const { default: store } = await import("./store"); 
     this.socket = new WebSocket("ws://localhost:3000")
 
     this.socket.onopen = () => {
@@ -46,7 +47,7 @@ class SocketStore {
         }
         case "loadFiles": {
           console.log(parse)
-          runInAction(() => store.loadFiles = parse.data)
+          runInAction(() => store.loadFiles += parse.data)
         }
       }
     }

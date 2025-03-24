@@ -11,15 +11,9 @@
 }
 .block {
   background-color: #404040;
-  // outline: 10px solid #616161;
   box-shadow: inset 0 0 0 10px #616161; 
-  font-size: 64px;
-  text-align: center;
   width: 345px;
   height: 340px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   border-radius: 20px;
 }
@@ -34,6 +28,6 @@
 }
 .loader {
   height: 50%;
-
-  animation: loading 4s linear infinite;
+  margin: auto;
+  animation: loading 1s linear infinite;
 }

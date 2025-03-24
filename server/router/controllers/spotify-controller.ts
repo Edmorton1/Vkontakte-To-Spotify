@@ -68,12 +68,12 @@ class SpotifyController {
                 return [buffer.toString('utf-8').split('.').slice(0, -1).join('.'), file.buffer.toString('utf-8')]
             }).sort((a, b) => a[1].length - b[1].length)
             
-            let count = files.length
-            WebsocketController.setLoadFiles(files.length)
+            // let count = (files.length - 1)
+            WebsocketController.setLoadFiles(files.length - 1)
             const total: SpotifyDataInterface[] = []
 
             for (let file of files) {
-                count--
+                // count--
                 const $ = cheerio.load(file[1])
                 const tracksElements =  chunkArray($('.audio_row__performer_title').toArray())
                 let trackState = 0;
@@ -91,7 +91,6 @@ class SpotifyController {
                         if (name && artist) {
                             const result = await SpotifyModel.take(artist, name)
                             trackState++
-                            console.log(Math.round(trackState / tracksElements.flat(Infinity).length))
                             WebsocketController.setLoading(trackState / tracksElements.flat(Infinity).length)
                             return result
                         }
@@ -102,12 +101,12 @@ class SpotifyController {
                 }
                 // total.push(playlist)
                 WebsocketController.pushToDB(playlist)
-                WebsocketController.setLoadFiles(count)
+                WebsocketController.setLoadFiles(-1)
             }
-            res.json(total)
+            // res.json(total)
             // user_data.push(...total)
             // console.log(total)
-            return total
+            // return total
         } catch(err) {
             console.log(err)
             res.status(500).json(err)

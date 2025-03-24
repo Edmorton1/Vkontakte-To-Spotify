@@ -21,7 +21,7 @@ function Data() {
 
   function blocksRender() {
     return Array.from({length: store.loadFiles}, (_, i) => (
-      <Block />
+      <Block index={i}/>
     ))
   }
 
@@ -31,15 +31,10 @@ function Data() {
     <main className={styles.main}
       onDragEnter={(event) => {setShowBlock(true); event.preventDefault()}}
       onDrop={(event) => {
-        if (store.loadFiles < 1) {
-          dropHandle(event);
-          store.loadFiles++;
-        } else {
-          console.log('asasdsad')
-          ErrorStore.setError(new Error('Пока файлы загружаются нельзя добавлять ещё '))
-        }
-        event.preventDefault();
         setShowBlock(false); 
+        dropHandle(event);
+        store.loadFiles++;
+        event.preventDefault();
       }}
       onDragOver={(e) => {e.preventDefault(); console.log('OVER')}}
       onDragLeave={(event) => 

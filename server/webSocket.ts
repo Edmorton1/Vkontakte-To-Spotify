@@ -1,4 +1,5 @@
 // import { users } from "@s/router/db";
+import { WebSocketInterface } from "@s/router/types";
 import WebSocket from "ws";
 
 export default function createWebSocketServer(server: any) {
@@ -9,8 +10,8 @@ export default function createWebSocketServer(server: any) {
       
       ws.send(JSON.stringify({type: "message", data: 'Ты подключился'}))
 
-      ws.on('message', (message) => {
-          console.log(message)
+      ws.on('message', (message: Base64URLString) => {
+          console.log(JSON.parse(message))
       })
       ws.on('close', () => {
         console.log('КЛИЕНТ ОТКЛЮЧИЛСЯ')

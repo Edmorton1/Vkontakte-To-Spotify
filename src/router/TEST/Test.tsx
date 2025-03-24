@@ -7,24 +7,6 @@ import * as animations from "@/css/animations/animations.module.scss"
 function Test() {
   const [socket, setSocket] = useState<WebSocket>()
 
-  useEffect(() => {
-    // 🔥 Используем встроенный WebSocket API (без "ws" из Node.js)
-    const socket = new WebSocket("ws://localhost:3000");
-    setSocket(socket)
-
-    socket.onopen = () => {
-      console.log("✅ WebSocket подключен!");
-    };
-    socket.onmessage = (event) => {
-      console.log(event)
-    }
-
-    return () => {
-      socket.close(); // Закрываем WebSocket при размонтировании компонента
-    };
-  }, []);
-console.log(socket)
-
   return (
     <Suspense>
       <div>

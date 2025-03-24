@@ -241,7 +241,7 @@ class Store {
 
   loadPlaylists = action(async (formData: FormData, setShowBlock: Function) => {
     try {
-      console.log(formData)
+      // console.log(formData)
       // this.loadFiles = true
       await $api.post(`http://localhost:3000/api/take`, formData)
     } catch(err) {
