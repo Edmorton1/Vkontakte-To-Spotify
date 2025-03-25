@@ -7,7 +7,7 @@ import * as cheerio from 'cheerio'
 import {readFileSync} from 'fs'
 import path from 'path'
 import fs from 'fs/promises'
-import { user_data, user_id } from "@s/router/db"
+import { pushed_playlists, user_data, user_id } from "@s/router/db"
 import $spotify from "@s/router/axios/$spotify"
 import WebsocketController from "@s/router/controllers/websocket-controller"
 
@@ -113,31 +113,38 @@ class SpotifyController {
         }
     }
     createAllPlaylists = async (req: Request, res: Response) => {
+        console.log(user_id)
         // console.log(user_data)
         const {playlist, clean} = req.body
         console.log(playlist, clean)
         const validateData = user_data.filter((e, i) => (!e.is_published && (playlist == i || playlist === undefined)))
-        console.log(validateData)
+        // console.log(validateData)
+        let count = 0
         try {
             for (const playlist_to_pub of validateData) {
-                // const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
-                //     name: playlist_to_pub.playlist,
-                //     description: playlist_to_pub.playlist,
-                //     public: true
-                // })
-                // const playlist_id = spotify_playlist.data.id
+                const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
+                    name: playlist_to_pub.playlist,
+                    description: playlist_to_pub.playlist,
+                    public: true
+                })
+                const playlist_id = spotify_playlist.data.id
+                pushed_playlists.push({id_site: count, id_spoty: playlist_id})
+                count++
                 const tracks = chunkArray(playlist_to_pub.tracks, 99)
                 for (let chunk of tracks) {
                     await delay(500)
 
                     const body = {uris: chunk.map((track: trackInterface) => {
-                        // return `spotify:track:${track.id}`
-                        if (clean) {
-                            switch 
+                        if (clean && !track.sim_event) {
+                            return `spotify:track:${track.id}`
                         }
-                    })}
+                        if (!clean) {
+                            return `spotify:track:${track.id}`;
+                        }
+                        return;
+                    }).filter(e => e !== undefined)}
                     console.log(body)
-                    // await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
+                    await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
                 }
             }
             switch (playlist) {
@@ -150,12 +157,32 @@ class SpotifyController {
                     break
                 }
             }
-            // console.log(user_data)
+            console.log(pushed_playlists)
             res.json(user_data)
         } catch(err) {
             console.log(err)
             res.status(500).json(err)
         }
+    }
+    removePlaylist = async (req: Request, res: Response) => {
+        // [
+        //     '5Ci4AwguD4FZffTTVuOhpn',
+        //     '1tYCkdUbiNgjY6H6UbE3xX',
+        //     '43sUqCA9fYzGgtfOaUa2J9',
+        //     '2bRnvHAVOAUvsILXKCfy6B'
+        // ]
+        const id = Number(req.params.id)
+        console.log(user_id)
+        console.log(id)
+        const playlist_id = pushed_playlists.filter(e => e.id_site == id)[0].id_spoty
+        const indexToRemove = pushed_playlists.findIndex(e => e.id_spoty === playlist_id)
+        pushed_playlists.splice(indexToRemove, 1)
+        console.log(pushed_playlists)
+        // const playlistsInSpoty: any[] = (await $spotifyPost.get(`https://api.spotify.com/v1/me/playlists`)).data.items
+        // const allPlaylists: string[] = playlistsInSpoty.map(e => e.id)
+        // console.log(allPlaylists) -- ПОЛУЧЕНИЕ ВСЕХ ПЛЕЙЛИСТОВ
+        const playlistsInSpoty = $spotifyPost.delete(`https://api.spotify.com/v1/playlists/${playlist_id}/followers`)
+        res.json(playlistsInSpoty)
     }
 
     updateTrack = async (req: Request, res: Response) => {

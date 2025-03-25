@@ -14,7 +14,6 @@ import { CSSTransition, TransitionGroup } from "react-transition-group"
 import * as animations from "@/css/animations/animations.module.scss"
 import Warning from "@/components/Warning";
 import Loading from "@/components/Loading";
-import Progress from "@/components/Progress";
 // import * as cross from "@/assets/cross.png"
 
 function Playlists() {
@@ -74,9 +73,7 @@ function Playlists() {
               } else {store.createPlaylist(playlist_id)}
             }} className={styles.button} disabled={store.isLoadCreate.includes(playlist_id)} >{store.isLoadCreate.includes(playlist_id) ? <Loading /> : `Добавить на Spotify`}</button>
           }
-            <Modal setModal={setModalWarning} nodeRef={modalRef} uslovie={openPlaylist == `spotify-${playlist_id}` && modalWarning}>
-              <Warning playlist_id={playlist_id}/>
-            </Modal>
+          <Warning playlist_id={playlist_id} setModalWarning={setModalWarning} uslovie={openPlaylist == `spotify-${playlist_id}` && modalWarning} />
         </div>
       </CSSTransition>
     )

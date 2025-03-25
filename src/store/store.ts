@@ -280,20 +280,20 @@ class Store {
   })
   createPlaylist = action(
     async (playlist_id?: number, clean?: boolean) => {
+      const playlist_arr = [playlist_id]
       try {
-        // if (playlist_id === undefined) {
-        //   await $api.post()
-        // } else {
-
-        // }
+        if (playlist_id === undefined) {
+          playlist_arr.push(...this.data.map((e, i) => i))
+        }
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-        this.isLoadCreate.push(playlist_id)
+        this.isLoadCreate.push(...playlist_arr)
         console.log(this.isLoadCreate)
-        // await delay(3000)
+        await delay(3000)
         await $api.post('http://localhost:3000/api/createAllPlaylists', {
           playlist: playlist_id,
-          clean: false
+          clean: clean
         })
+        this.data.forEach((e, i) => {playlist_arr.includes(i) ? e.is_published = true : null})
         this.data[playlist_id].is_published = true
         this.isLoadCreate = this.isLoadCreate.filter(e => e != playlist_id)
         console.log(this.isLoadCreate)
@@ -306,7 +306,10 @@ class Store {
   removePlaylist = action(
     async (playlist_id: number) => {
       try {
+        this.isLoadCreate.push(playlist_id)
+        await $api.delete(`http://localhost:3000/api/removePlaylist/${playlist_id}`)
         this.data[playlist_id].is_published = false
+        this.isLoadCreate.filter(e => e != playlist_id)
       } catch(err) {
         console.log(err)
         ErrorStore.setError(new Error('Не удалось вернуть плейлист, попробуйте ещё раз'))

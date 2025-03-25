@@ -24,7 +24,9 @@ class SpotifyMiddlewares {
       const access_token = await getAccessToken(req.cookies.spotify_refresh_token)
       $spotifyPost.defaults.headers.Authorization = `Bearer ${access_token}`
       // console.log(access_token, req.cookies)
-      await $spotifyPost.get('https://api.spotify.com/v1/me')
+      const request = await $spotifyPost.get('https://api.spotify.com/v1/me')
+      //@ts-ignore
+      user_id = request.data.id
       console.log(true)
       res.send(true)
     } catch {

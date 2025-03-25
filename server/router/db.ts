@@ -10,6 +10,8 @@ export const AuthorizationBasic = Buffer.from(
 
 export let user_id = ''
 
+export let pushed_playlists: {id_site: number, id_spoty: string}[] = []
+
 export const user_data: SpotifyDataInterface[] = [
     {
         "playlist": "аниме2",

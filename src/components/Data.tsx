@@ -9,9 +9,11 @@ import Block from "@/components/Block";
 import Playlists from "@/components/Playlists";
 import BlockAdding from "@/components/BlockAdding";
 import ErrorStore from "@/store/ErrorStore";
+import Warning from "@/components/Warning";
 
 function Data() {
   const [showBlock, setShowBlock] = useState(false)
+  const [modalWarning, setModalWarning] = useState(false)
   const dropHandle = async (e: React.DragEvent<HTMLElement>) => {
     const files = e.dataTransfer.files
     let formData = new FormData()
@@ -43,7 +45,8 @@ function Data() {
       {/* <Block showBlock={showBlock} /> */}
       {blocksRender()}
       <BlockAdding showBlock={showBlock} />
-      <button onClick={() => store.createPlaylist(undefined, false)}>Добавить всё</button>
+      <button onClick={() => setModalWarning(true)}>Добавить всё</button>
+      <Warning setModalWarning={setModalWarning} uslovie={modalWarning} />
       {/* <DragDrop /> */}
     </main>
   );
