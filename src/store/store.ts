@@ -279,24 +279,22 @@ class Store {
       }
   })
   createPlaylist = action(
-    async (playlist_id?: number, clean?: boolean) => {
-      const playlist_arr = [playlist_id]
+    async (playlist_arr: number[], clean?: boolean) => {
       try {
-        if (playlist_id === undefined) {
-          playlist_arr.push(...this.data.map((e, i) => i))
-        }
-        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+        // const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
         this.isLoadCreate.push(...playlist_arr)
         console.log(this.isLoadCreate)
-        await delay(3000)
-        await $api.post('http://localhost:3000/api/createAllPlaylists', {
-          playlist: playlist_id,
-          clean: clean
-        })
-        this.data.forEach((e, i) => {playlist_arr.includes(i) ? e.is_published = true : null})
-        this.data[playlist_id].is_published = true
-        this.isLoadCreate = this.isLoadCreate.filter(e => e != playlist_id)
-        console.log(this.isLoadCreate)
+        // await delay(3000)
+        for (let i of playlist_arr) {
+          await $api.post('http://localhost:3000/api/createAllPlaylists', {
+            playlist: i,
+            clean: clean
+          })
+          this.data[i].is_published = true
+        }
+        // this.data.forEach((e, i) => {playlist_arr.includes(i) ? e.is_published = true : null})
+        this.isLoadCreate = this.isLoadCreate.filter(e => !this.isLoadCreate.includes(e))
+        console.log(this.data)
       } catch(err) {
         console.log(err)
         ErrorStore.setError(new Error('Не удалось создать плейлист, попробуйте ещё раз'))
@@ -309,7 +307,8 @@ class Store {
         this.isLoadCreate.push(playlist_id)
         await $api.delete(`http://localhost:3000/api/removePlaylist/${playlist_id}`)
         this.data[playlist_id].is_published = false
-        this.isLoadCreate.filter(e => e != playlist_id)
+        this.isLoadCreate = this.isLoadCreate.filter(e => e != playlist_id)
+        console.log(this.data)
       } catch(err) {
         console.log(err)
         ErrorStore.setError(new Error('Не удалось вернуть плейлист, попробуйте ещё раз'))

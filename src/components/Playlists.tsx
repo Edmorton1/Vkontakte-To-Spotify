@@ -70,10 +70,10 @@ function Playlists() {
             <button onClick={() => {
               if (sim) {
                 setOpenPlaylist(`spotify-${playlist_id}`); setModalWarning(true)
-              } else {store.createPlaylist(playlist_id)}
+              } else {store.createPlaylist([playlist_id])}
             }} className={styles.button} disabled={store.isLoadCreate.includes(playlist_id)} >{store.isLoadCreate.includes(playlist_id) ? <Loading /> : `Добавить на Spotify`}</button>
           }
-          <Warning playlist_id={playlist_id} setModalWarning={setModalWarning} uslovie={openPlaylist == `spotify-${playlist_id}` && modalWarning} />
+          <Warning playlist_arr={[playlist_id]} setModalWarning={setModalWarning} uslovie={openPlaylist == `spotify-${playlist_id}` && modalWarning} />
         </div>
       </CSSTransition>
     )

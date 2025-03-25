@@ -115,11 +115,10 @@ class SpotifyController {
     createAllPlaylists = async (req: Request, res: Response) => {
         console.log(user_id)
         // console.log(user_data)
-        const {playlist, clean} = req.body
+        const {playlist, clean}: {playlist: number, clean: boolean} = req.body
         console.log(playlist, clean)
-        const validateData = user_data.filter((e, i) => (!e.is_published && (playlist == i || playlist === undefined)))
+        const validateData = user_data.filter((e, i) => (!e.is_published && (playlist == i)))
         // console.log(validateData)
-        let count = 0
         try {
             for (const playlist_to_pub of validateData) {
                 const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
@@ -128,8 +127,7 @@ class SpotifyController {
                     public: true
                 })
                 const playlist_id = spotify_playlist.data.id
-                pushed_playlists.push({id_site: count, id_spoty: playlist_id})
-                count++
+                pushed_playlists.push({id_site: playlist, id_spoty: playlist_id})
                 const tracks = chunkArray(playlist_to_pub.tracks, 99)
                 for (let chunk of tracks) {
                     await delay(500)
@@ -147,17 +145,9 @@ class SpotifyController {
                     await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
                 }
             }
-            switch (playlist) {
-                case undefined: {
-                    user_data.forEach(e => e.is_published = true)
-                    break
-                }
-                default: {
-                    user_data[playlist].is_published = true
-                    break
-                }
-            }
+            user_data[playlist].is_published = true
             console.log(pushed_playlists)
+            console.log(user_data)
             res.json(user_data)
         } catch(err) {
             console.log(err)
@@ -165,12 +155,6 @@ class SpotifyController {
         }
     }
     removePlaylist = async (req: Request, res: Response) => {
-        // [
-        //     '5Ci4AwguD4FZffTTVuOhpn',
-        //     '1tYCkdUbiNgjY6H6UbE3xX',
-        //     '43sUqCA9fYzGgtfOaUa2J9',
-        //     '2bRnvHAVOAUvsILXKCfy6B'
-        // ]
         const id = Number(req.params.id)
         console.log(user_id)
         console.log(id)
@@ -182,6 +166,8 @@ class SpotifyController {
         // const allPlaylists: string[] = playlistsInSpoty.map(e => e.id)
         // console.log(allPlaylists) -- ПОЛУЧЕНИЕ ВСЕХ ПЛЕЙЛИСТОВ
         const playlistsInSpoty = $spotifyPost.delete(`https://api.spotify.com/v1/playlists/${playlist_id}/followers`)
+        user_data[id].is_published = false
+        console.log(user_data)
         res.json(playlistsInSpoty)
     }
 

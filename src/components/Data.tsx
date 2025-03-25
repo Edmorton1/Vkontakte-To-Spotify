@@ -10,6 +10,7 @@ import Playlists from "@/components/Playlists";
 import BlockAdding from "@/components/BlockAdding";
 import ErrorStore from "@/store/ErrorStore";
 import Warning from "@/components/Warning";
+import * as styles_data_wrapper from "@/css/data_wrapper.module.scss"
 
 function Data() {
   const [showBlock, setShowBlock] = useState(false)
@@ -20,7 +21,6 @@ function Data() {
     Array.from(files).forEach(file => formData.append(file.name, file))
     store.loadPlaylists(formData, setShowBlock)
   }
-
   function blocksRender() {
     return Array.from({length: store.loadFiles}, (_, i) => (
       <Block index={i}/>
@@ -30,25 +30,28 @@ function Data() {
   blocksRender()
 
   return (
-    <main className={styles.main}
-      onDragEnter={(event) => {setShowBlock(true); event.preventDefault()}}
-      onDrop={(event) => {
-        setShowBlock(false); 
-        dropHandle(event);
-        store.loadFiles++;
-        event.preventDefault();
-      }}
-      onDragOver={(e) => {e.preventDefault(); console.log('OVER')}}
-      onDragLeave={(event) => 
-      {event.preventDefault(); if (!event.relatedTarget || !document.getElementsByClassName(styles.main)[0].contains(event.relatedTarget as Node)) setShowBlock(false)}}>
-      <Playlists />
-      {/* <Block showBlock={showBlock} /> */}
-      {blocksRender()}
-      <BlockAdding showBlock={showBlock} />
-      <button onClick={() => setModalWarning(true)}>Добавить всё</button>
-      <Warning setModalWarning={setModalWarning} uslovie={modalWarning} />
-      {/* <DragDrop /> */}
-    </main>
+    <div className={styles_data_wrapper.container}>
+      <main className={styles.main}
+        onDragEnter={(event) => {setShowBlock(true); event.preventDefault()}}
+        onDrop={(event) => {
+          setShowBlock(false); 
+          dropHandle(event);
+          store.loadFiles++;
+          event.preventDefault();
+        }}
+        onDragOver={(e) => {e.preventDefault(); console.log('OVER')}}
+        onDragLeave={(event) => 
+        {event.preventDefault(); if (!event.relatedTarget || !document.getElementsByClassName(styles.main)[0].contains(event.relatedTarget as Node)) setShowBlock(false)}}>
+        <Playlists />
+        {/* <Block showBlock={showBlock} /> */}
+        {blocksRender()}
+        <BlockAdding showBlock={showBlock} />
+        {/* <DragDrop /> */}
+      </main>
+    
+      <button onClick={() => setModalWarning(true)} className={(styles.button, styles_data_wrapper.button)}>Добавить всё</button>
+      <Warning playlist_arr={(store.data.filter(e => !e.is_published)).map((e, i) => i)} setModalWarning={setModalWarning} uslovie={modalWarning} />
+    </div>
   );
 }
 

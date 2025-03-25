@@ -29,7 +29,9 @@ function Main() {
     )
   }
   if (store.data.length > 0) {
-    return <Data />
+    return (
+      <Data />
+    )
   }
   if (auth === true) {
     console.log(store.data.length)
