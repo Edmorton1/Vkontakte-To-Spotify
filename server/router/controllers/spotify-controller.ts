@@ -113,40 +113,44 @@ class SpotifyController {
         }
     }
     createAllPlaylists = async (req: Request, res: Response) => {
-        // // await $spotifyPost.get(`${process.env.URL_SERVER}/getSpotifyTracks`)
-        // for (const playlist of user_data) {
-        //     const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
-        //         name: playlist.playlist,
-        //         description: playlist.playlist,
-        //         public: true
-        //     })
-        //     const playlist_id = spotify_playlist.data.id
-        //     const body = {uris: playlist.tracks.map(track => {
-        //         return `spotify:track:${track.id}`
-        //     })}
-        //     console.log(body)
-        //     await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
-        // }
-        // res.json(user_data)
+        // console.log(user_data)
+        const {playlist, clean} = req.body
+        console.log(playlist, clean)
+        const validateData = user_data.filter((e, i) => (!e.is_published && (playlist == i || playlist === undefined)))
+        console.log(validateData)
         try {
-            for (const playlist of user_data) {
-                const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
-                    name: playlist.playlist,
-                    description: playlist.playlist,
-                    public: true
-                })
-                const playlist_id = spotify_playlist.data.id
-                const tracks = chunkArray(playlist.tracks, 99)
+            for (const playlist_to_pub of validateData) {
+                // const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
+                //     name: playlist_to_pub.playlist,
+                //     description: playlist_to_pub.playlist,
+                //     public: true
+                // })
+                // const playlist_id = spotify_playlist.data.id
+                const tracks = chunkArray(playlist_to_pub.tracks, 99)
                 for (let chunk of tracks) {
                     await delay(500)
-                    const body = {uris: chunk.map(track => {
-                        return `spotify:track:${track.id}`
+
+                    const body = {uris: chunk.map((track: trackInterface) => {
+                        // return `spotify:track:${track.id}`
+                        if (clean) {
+                            switch 
+                        }
                     })}
                     console.log(body)
-                    await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
+                    // await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
                 }
-    
             }
+            switch (playlist) {
+                case undefined: {
+                    user_data.forEach(e => e.is_published = true)
+                    break
+                }
+                default: {
+                    user_data[playlist].is_published = true
+                    break
+                }
+            }
+            // console.log(user_data)
             res.json(user_data)
         } catch(err) {
             console.log(err)

@@ -43,6 +43,7 @@ function Data() {
       {/* <Block showBlock={showBlock} /> */}
       {blocksRender()}
       <BlockAdding showBlock={showBlock} />
+      <button onClick={() => store.createPlaylist(undefined, false)}>Добавить всё</button>
       {/* <DragDrop /> */}
     </main>
   );

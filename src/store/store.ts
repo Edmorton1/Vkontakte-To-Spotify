@@ -279,12 +279,21 @@ class Store {
       }
   })
   createPlaylist = action(
-    async (playlist_id: number, clean?: boolean) => {
+    async (playlist_id?: number, clean?: boolean) => {
       try {
+        // if (playlist_id === undefined) {
+        //   await $api.post()
+        // } else {
+
+        // }
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
         this.isLoadCreate.push(playlist_id)
         console.log(this.isLoadCreate)
-        await delay(3000)
+        // await delay(3000)
+        await $api.post('http://localhost:3000/api/createAllPlaylists', {
+          playlist: playlist_id,
+          clean: false
+        })
         this.data[playlist_id].is_published = true
         this.isLoadCreate = this.isLoadCreate.filter(e => e != playlist_id)
         console.log(this.isLoadCreate)
