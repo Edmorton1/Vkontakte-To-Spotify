@@ -28,7 +28,7 @@ function Main() {
       <Link to={url}>Войти</Link>
     )
   }
-  if (store.data.length > 0) {
+  if (store.data.length > 0 || store.loadFiles > 0) {
     return (
       <Data />
     )

@@ -61,9 +61,9 @@ class SpotifyController {
         try {
             // WebsocketController.sendmessage('zaebal')
             const files = req.files.map(file => {
-                if (file.mimetype != 'text/html') {
-                    throw new Error('EXTENSION ERROR')
-                }
+                // if (file.mimetype != 'text/html') {
+                //     throw new Error('EXTENSION ERROR')
+                // }
                 const buffer = Buffer.from(file.fieldname, 'latin1')
                 return [buffer.toString('utf-8').split('.').slice(0, -1).join('.'), file.buffer.toString('utf-8')]
             }).sort((a, b) => a[1].length - b[1].length)
@@ -84,7 +84,7 @@ class SpotifyController {
                 }
     
                 for (let trackPack of tracksElements) {
-                    (tracksElements.length > 2 && await delay(5000))
+                    (tracksElements.length > 2 && await delay(6000))
                     const tracks: trackInterface[] = await Promise.all(trackPack.map(async e => {
                         const artist = $(e).find('.artist_link').text().trim()
                         const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()

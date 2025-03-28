@@ -1,6 +1,4 @@
-$img-size: 30px;
 $icon-width: 36%;
-$img-margin: $img-size + 15px;
 
 .tracks {
   // margin-top: 10%;
@@ -15,79 +13,78 @@ $img-margin: $img-size + 15px;
   border-radius: 50px;
 
   img {
-    width: $img-size;
-    height: $img-size;
+    width: var(--img-size);
+    height: var(--img-size);
     margin-left: 15px;
   }
 
   * {
     font-weight: 500;
   }
-}
 
-
-.tracksHeader {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr) $img-margin;
-  align-items: center;
-
-  span {
-    display: flex;
+  &__header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) var(--img-margin);
     align-items: center;
-    justify-content: center;
-  }
-  span:nth-child(2) {
-    background-color: #454545;
-    border-radius: 20px;
-    height: 75%;
-    font-size: 24px;
-  }
-
-  img {
-    width: 50px;
-    height: 50px;
-    margin: 0;
-    // padding-right: 100px;
-  }
-}
-
-
-.track {
-  display: grid;
-  grid-template-rows: minmax(42px, 100%);
-  // gap: 100px;
-  grid-template-columns: 1fr 0.3fr 1fr $img-margin;
-  align-items: center;
-  // column-gap: 10px;
-}
-.track_sim_event {
-  @extend .track;
-
-  .twin {
-    color: rgb(255, 0, 0);
-
+  
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     span:nth-child(2) {
-      color: rgb(209, 0, 0);
+      background-color: #454545;
+      border-radius: 20px;
+      height: 75%;
+      font-size: 24px;
+    }
+  
+    img {
+      width: 50px;
+      height: 50px;
+      margin: 0;
+      // padding-right: 100px;
     }
   }
-}
 
-.trackChange {
-  @extend .track;
-  column-gap: 5px;
-  grid-template-columns: 60% 1fr 1fr;
-}
+  &__track {
+    display: grid;
+    grid-template-rows: minmax(42px, 100%);
+    // gap: 100px;
+    grid-template-columns: 1fr 0.3fr 1fr var(--img-margin);
+    align-items: center;
+    // column-gap: 10px;
 
-.twin {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
+    &__change {
+      @extend .tracks__track;
+      column-gap: 5px;
+      grid-template-columns: 60% 1fr 1fr;
+    }
 
-  span:nth-child(2) {
-    color: #ACACAC;
+    &__sim_event {
+      @extend .tracks__track;
+
+      .tracks__track__twin {
+        color: rgb(255, 0, 0);
+    
+        span:nth-child(2) {
+          color: rgb(209, 0, 0);
+        }
+      }
+    }
+    &__twin {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+    
+      span:nth-child(2) {
+        color: #ACACAC;
+      }
+
+      &:nth-child(2) {
+        align-items: center;
+      }
+    }
   }
-}
-.twin:nth-child(2) {
-  align-items: center;
 }

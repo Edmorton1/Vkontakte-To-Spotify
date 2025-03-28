@@ -1,9 +1,10 @@
 $time: 500ms;
-@use "@/css/burger.module.scss" as burger;
+// @use "@/css/burger.module.scss" as burger;
+// transform: translateX(burger.$img-size);
 
 .enter {
   opacity: 0;
-  transform: translateX(burger.$img-size);
+  transform: translateX(var(--img-size));
 }
 .enterActive {
   opacity: 1;
@@ -15,7 +16,7 @@ $time: 500ms;
 }
 .exitActive {
   opacity: 0;
-  transform: translateX(burger.$img-size);
+  transform: translateX(var(--img-size));
   transition: opacity $time, transform $time;
 }
 

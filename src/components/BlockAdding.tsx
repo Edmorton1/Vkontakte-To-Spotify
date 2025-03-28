@@ -1,22 +1,23 @@
-import { createPortal } from "react-dom"
 import * as styles from "@/css/data.module.scss"
 import { observer } from "mobx-react-lite"
-import Loading from "@/components/Loading"
-import Progress from "@/components/Progress"
 import TransitionShablon from "@/components/TransitionShablon"
 import { useRef } from "react"
 import * as styles_drop from "@/css/dragDrop.module.scss"
-import store from "@/store/store"
+import { CSSTransition } from "react-transition-group"
+import * as animations from "@/css/animations/animations.module.scss"
 
 function BlockAdding({showBlock}: {showBlock: boolean}) {
   const nodeRef = useRef(null)
 
   return (
-    <TransitionShablon nodeRef={nodeRef} inside={showBlock} >
-      <div ref={nodeRef} style={{justifyContent: "center"}} className={`${styles_drop.block} ${styles.playlistContainer}`}>
+    <CSSTransition nodeRef={nodeRef} in={showBlock} timeout={50} unmountOnExit classNames={{
+      enter: animations.enter,
+      enterActive: animations.enterActive,
+    }}>
+      <div ref={nodeRef} style={{justifyContent: "center"}} className={`${styles_drop.block} ${styles.playlist}`}>
         Новый плейлист
       </div>
-    </TransitionShablon>
+    </CSSTransition>    
   )
 }
 

@@ -1,7 +1,7 @@
 
 import { AuthorizationBasic } from "@s/router/db";
 import { userTokens } from "@s/router/types";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import * as qs from 'qs'
 
 export const $spotifyPost = axios.create({
@@ -28,6 +28,18 @@ export async function getAccessToken(refresh_token: string) {
   const data = await response.json() as userTokens
   return data.access_token
 }
+
+$spotifyPost.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    if ([429, 500, 502, 503, 504].includes(error.response?.status)) {
+      console.log(error.response)
+      await new Promise(res => setTimeout(res, 30000))
+      return $spotifyPost.request(error.config.data)
+    }
+    return Promise.reject(error)
+  }
+)
 
 // export function setAuthorization(refresh_token: string, access_token?: string) {
 //   if (!access_token) {

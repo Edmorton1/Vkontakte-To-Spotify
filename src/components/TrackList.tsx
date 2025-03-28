@@ -8,7 +8,6 @@ import { observer } from "mobx-react-lite";
 import * as styles_shablon from "@/css/shablon.module.scss"
 import { CSSTransition, Transition } from "react-transition-group";
 import { useRef } from "react";
-import TransitionShablon from "@/components/TransitionShablon";
 import * as animations from "@/css/animations/burgerAnimation.module.scss"
 
 interface propsInterface {
@@ -22,26 +21,23 @@ function TrackList({track, index, playlist}: propsInterface) {
   const [changeId, setChangeId] = useState(-1)
   const [value, setValue] = useState('')
   const nodeRef = useRef(null);
-  // console.log(burger)
-  // onClick={() => store.updateTracks(playlist, index, 'url', 'https://open.spotify.com/track/73yXCwINoNqUBJRAgPJPsY')}
 
   function justTrack() {
     return (
       <>
-      {/* <button onClick={() => store.updateTracks(playlist, index, 'delete')}>удалить</button> */}
-      <div className={styles.twin}>
+      <div className={styles.tracks__track__twin}>
         <span>{track.spotify_name}</span>
         <span>{track.spotify_artist}</span>
       </div>
-      <div className={styles.twin}>
+      <div className={styles.tracks__track__twin}>
         <span>{track.name_sim != 1 ? track.name_sim : 'ㅤ'}</span>
         <span>{track.arist_sim != 1 ? track.arist_sim : 'ㅤ'}</span>
       </div>
-      <div className={styles.twin}>
+      <div className={styles.tracks__track__twin}>
         <span>{track.vk_name}</span>
         <span>{track.vk_artist}</span>
       </div>
-      <div onMouseEnter={() => {setBurger(index); console.log(burger)}} onMouseLeave={() => setBurger(-1)} className={stylesBurger.cross} >
+      <div onMouseEnter={() => {setBurger(index); console.log(burger)}} onMouseLeave={() => setBurger(-1)} className={stylesBurger.burger__cross} >
         <CSSTransition nodeRef={nodeRef} in={burger == index} timeout={500} unmountOnExit classNames={{
           enter: animations.enter,
           enterActive: animations.enterActive,
@@ -72,14 +68,14 @@ function TrackList({track, index, playlist}: propsInterface) {
   
   if (changeId == index) {
     return (
-    <div className={styles.trackChange}>
+    <div className={styles.tracks__track__change}>
       {changeTrack()}
     </div>
     )
   }
 
   return (
-    <div className={styles.track && track.sim_event ? styles.track_sim_event : styles.track}>
+    <div className={styles.tracks__track && track.sim_event ? styles.tracks__track__sim_event : styles.tracks__track}>
       {justTrack()}
     </div>
   )

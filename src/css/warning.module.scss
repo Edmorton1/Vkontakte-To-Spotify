@@ -1,4 +1,4 @@
-@use "./data.module.scss" as data;
+@use "./button" as button;
 $size: 500px;
 
 .wrapper {
@@ -29,18 +29,12 @@ $size: 500px;
     @extend .button;
     font-size: 17px;
     background-color: var(--change-color);
-    // height: 100%;
   }
 
   div:nth-child(3) {
     margin-top: 5px;
     display: grid;
     row-gap: 6px;
-    // background-color: red;
     margin-bottom: 20px;
   }
-
-  // & > *:nth-child(3) {
-    // margin-top: auto; // Прижимаем к верху
-  // }
 }

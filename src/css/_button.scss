@@ -1,0 +1,24 @@
+$border_radius: 50px;
+
+.button {
+  height: 43px;
+  width: var(--playlist_width);
+  background-color: var(--sportify-color);
+  color: white;
+  border-radius: $border_radius;
+  border: 0px;
+  font-size: 30px;
+  transition: 0.1s linear;
+}
+.button:disabled {
+  background-color: #5B5B5B !important;
+  color: #B6B6B6;
+}
+.button:disabled:hover {
+  transform: scale(1);
+  cursor: auto;
+}
+.button:hover{
+  // background-color: red !important;
+  transform: scale(1.03)
+}

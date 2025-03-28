@@ -47,12 +47,6 @@ class SpotifyModel {
     return await request.json();
   }
   take = async (artist: string, name: string) => {
-    // function checkName() {
-    //   if (artist == 'Unknown') {
-    //     return encodeURIComponent(name)
-    //   }
-    //   return encodeURIComponent(`${artist} ${name}`)
-    // }
     async function getResponse(str: string) {
       const response = await $spotifyPost.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(str)}&type=track&limit=50`);
       const bestMatch = response.data.tracks.items.map((e: spotifyTrackDataInterface) => ({
@@ -71,7 +65,7 @@ class SpotifyModel {
     }
     const first = await getResponse(`${artist} ${name}`)
     console.log('фирст')
-    await delay(1000)
+    await delay(2000)
     console.log('секонд')
     const second = await getResponse(name)
     const total = [first, second].sort((a: trackInterfaceWithSim, b: trackInterfaceWithSim) => (b.sim_total) - (a.sim_total))[0]

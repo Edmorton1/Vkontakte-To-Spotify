@@ -8,40 +8,23 @@
     --delete-color: #E20000;
     --gray-font-color: #ACACAC;
     --modal_back: #282828;
+    --playlist_width: 345px;
+    --img-size: 30px;
+    --img-margin: calc(var(--img-size) + 15px);
 }
 #root {
     height: 100%;
 }
 body {
-    // width: 100vw;
-    // height: 100vh;
     height: 100vh;
     margin: 0px;
     background-color: var(--bg_color);
     color: var(--fo_color);
     display: flex;
     justify-content: center;
-    // align-items: center;
-    // background: linear-gradient(-45deg, #4158D0, #e560dc, #ffb374, #ef5f5f, #d840b6);
-    // background-size: 400% 400%;
-    // animation: bg 12s ease infinite;
-    // @keyframes bg {
-    //     0% {
-    //         background-position: 0% 50%;
-    //     }
-    //     50% {
-    //         background-position: 100% 100%;
-    //     }
-    //     100% {
-    //         background-position: 0% 50%;
-    //     }
-    // }
 }
 
 header {
-    // position: fixed;
-    // position: absolute;
-    // top: 0;
     font-size: 44px;
     display: flex;
     align-items: center;
@@ -74,7 +57,6 @@ button {
 $progress-radius: 50px;
 
 progress {
-//   padding-bottom: 100px;
   margin: auto;
   appearance: none;
   width: 80%;
@@ -88,8 +70,6 @@ progress::-webkit-progress-bar {
 }
   
 progress::-webkit-progress-value {
-  background-color: #7a7a7a;
+  background-color: #888888;
   border-radius: $progress-radius;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
 }

@@ -13,7 +13,7 @@ function TransitionShablon({inside, nodeRef, children}: propsInterface) {
     in={inside} 
     unmountOnExit
     mountOnEnter
-    timeout={300} 
+    timeout={50} 
       classNames={{
       enter: animations.enter,
       enterActive: animations.enterActive,

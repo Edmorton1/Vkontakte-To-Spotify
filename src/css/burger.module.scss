@@ -1,19 +1,13 @@
-$img-size: 30px;
-$img-margin: $img-size + 15px;
 $button-width: 143px;
 
 .burger {
-  // background-color: red;
   display: flex;
   flex-direction: column;
   transition: 1s linear;
-  // width: 120px;
 
-  // height: 400px;
   position: absolute;
   padding-right: 10px;
   margin-left: -$button-width + 5px;
-  // padding-left: 10px;
 
 
   button {
@@ -21,42 +15,38 @@ $button-width: 143px;
     color: white;
     font-size: 24px;
     width: $button-width;
-    // background-color: var(--sportify-color);
-  }
-  button:nth-child(2) {
-    background-color: var(--sportify-color);
-  }
-  button:nth-child(3) {
-    background-color: var(--change-color);
-  }
-  button:first-child {
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    background-color: var(--gray-font-color);
-  }
-  button:last-child {
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    background-color: var(--delete-color);
-  }
-}
 
-.cross {
-  display: inline-block;
-  // padding-right: $img-margin;
-  img {
-    transition: 0.2s ease-in-out;
+    &:nth-child(2) {
+      background-color: var(--sportify-color);
+    }
+    &:nth-child(3) {
+      background-color: var(--change-color);
+    }
+    &:first-child {
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      background-color: var(--gray-font-color);
+    }
+    &:last-child {
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+      background-color: var(--delete-color);
+    }
   }
-  span {
+
+  &__cross {
     display: inline-block;
-    height: $img-size;
-    // padding-right: $img-margin;
-  }
-
-
-}
-.cross:hover {
-  img {
-    transform: rotate(90deg);
+    img {
+      transition: 0.2s ease-in-out;
+    }
+    span {
+      display: inline-block;
+      height: var(--img-size);
+    }
+    &:hover {
+      img {
+        transform: rotate(90deg);
+      }
+    }
   }
 }

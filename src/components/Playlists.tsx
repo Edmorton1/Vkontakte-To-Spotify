@@ -34,7 +34,7 @@ function Playlists() {
 
     function tracks(playlist: number) {
       return <div ref={modalRef} onClick={(event) => event.stopPropagation()} className={styles_tracks.tracks}>
-        <div className={styles_tracks.tracksHeader}>
+        <div className={styles_tracks.tracks__header}>
           <span><img src="https://cdn.worldvectorlogo.com/logos/spotify-2.svg" /></span>
           <span>Схожесть</span>
           <span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/VK_Compact_Logo_%282021-present%29.svg/1200px-VK_Compact_Logo_%282021-present%29.svg.png" /></span>
@@ -52,10 +52,10 @@ function Playlists() {
         exit: animations.exit,
         exitActive: animations.exitActive
       }}>
-        <div ref={playlistRef} className={styles.playlistContainer}>
-          <div className={styles.playlistCover}>{e.playlist}</div>
+        <div ref={playlistRef} className={styles.playlist}>
+          <div className={styles.playlist__cover}>{e.playlist}</div>
           <span>{sim > 0 ? `${sim} треков из ${e.tracks.length} несовпадают` : 'ㅤ'}</span>
-          <button onClick={() => {setModalTracks(true); setOpenPlaylist(playlist_id)}} className={styles.button_open} disabled={is_published || store.isLoadCreate.includes(playlist_id)}>Открыть</button>
+          <button onClick={() => {setModalTracks(true); setOpenPlaylist(playlist_id)}} className={styles.button__open} disabled={is_published || store.isLoadCreate.includes(playlist_id)}>Открыть</button>
           {/* {openPlaylist == playlist_id &&
             <Modal openPlaylist={openPlaylist} playlist_id={playlist_id} >{tracks(playlist_id)}</Modal>
           } */}

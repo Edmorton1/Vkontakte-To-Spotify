@@ -1,12 +1,12 @@
 @use "sass:list";
+@use "./_button.scss";
 
 $border_radius: 50px;
-$spotify-color: #1DB954;
-$playlist_width: 345px;
 
 .main {
   // background-color: red;
-  width: 71.8vw;
+  // width: 71.8vw;
+  width: 74vw;
   display: grid;
   column-gap: 5px;
   row-gap: 15px;
@@ -14,53 +14,31 @@ $playlist_width: 345px;
   background-color: var(--bg_color);
   // height: 100%;
 }
-.playlistContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  justify-self: center;
-  align-items: center;
-  width: $playlist_width;
-  height: 340px;
-  // overflow-wrap: break-word;
-  // background-color: var(--bg_color);
+.playlist {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    justify-self: center;
+    align-items: center;
+    width: var(--playlist_width);
+    height: 340px;
+
+  &__cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 218px;
+    width: var(--playlist_width);
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 64px;
+    border-radius: $border_radius;
+    overflow: hidden;
+  }
 }
-.playlistCover {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: 218px;
-  width: $playlist_width;
-  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-  font-size: 64px;
-  border-radius: $border_radius;
-  overflow: hidden;
-}
-.button {
-  height: 43px;
-  width: $playlist_width;
-  background-color:$spotify-color;
-  color: white;
-  border-radius: $border_radius;
-  border: 0px;
-  font-size: 30px;
-  transition: 0.1s linear;
-}
-.button:disabled {
-  background-color: #5B5B5B !important;
-  color: #B6B6B6;
-}
-.button:disabled:hover {
-  transform: scale(1);
-  cursor: auto;
-}
-.button:hover{
-  // background-color: red !important;
-  transform: scale(1.03)
-}
-.button_open {
-  @extend .button;
+
+.button__open {
+  @extend .button
 }
 .added {
   // background-color: red;
@@ -73,20 +51,20 @@ $playlist_width: 345px;
   .button {
     background-color: var(--change-color);
     font-size: 25px;
-    width: calc($playlist_width / 2.04);
+    width: calc(var(--playlist_width) / 2.04);
   }
 }
 
 $colors: 
   linear-gradient(45deg, rgba(255,0,0,1) 10%, rgba(255,255,0,1) 100%), 
   linear-gradient(45deg, rgba(0,255,60,1) 0%, rgba(0,102,255,1) 100%), 
-  linear-gradient(45deg, rgba(0,208,255,1) 0%, rgba(255,0,230,1) 100%), 
-  linear-gradient(225deg, rgba(0,208,255,1) 0%, rgba(255,0,230,1) 100%), 
-  linear-gradient(225deg, rgba(0,255,60,1) 0%, rgba(0,102,255,1) 100%), 
-  linear-gradient(225deg, rgba(255,255,0,1) 10%, rgba(255,0,0,1) 100%);
+  linear-gradient(45deg, rgba(0,208,255,1) 0%, rgba(255,0,230,1) 100%);
+  // linear-gradient(225deg, rgba(0,208,255,1) 0%, rgba(255,0,230,1) 100%), 
+  // linear-gradient(225deg, rgba(0,255,60,1) 0%, rgba(0,102,255,1) 100%), 
+  // linear-gradient(225deg, rgba(255,255,0,1) 10%, rgba(255,0,0,1) 100%);
 
 @for $i from 1 through list.length($colors) {
-  .playlistContainer:nth-child(6n + #{$i}) .playlistCover {
+  .playlist:nth-child(3n + #{$i}) .playlist__cover {
     background: list.nth($colors, $i);
   }
 }
@@ -94,13 +72,13 @@ $colors:
 $colors_button:
   #FFA628,
   #00C8B7,
-  #A416F6,
-  #A416F6,
-  #00C8B7,
-  #FFA628;
+  #A416F6;
+  // #A416F6,
+  // #00C8B7,
+  // #FFA628;
 
 @for $i from 1 through list.length($colors_button) {
-  .playlistContainer:nth-child(3n + #{$i}) .button_open {
+  .playlist:nth-child(3n + #{$i}) .button__open {
     background-color: list.nth($colors_button, $i);
   }
 }

@@ -12,7 +12,7 @@ function Block({index}: {index: number}) {
 
   return (
     <TransitionShablon nodeRef={nodeRef} inside={store.loadFiles > 0} >
-      <div ref={nodeRef} style={{justifyContent: "center"}} className={`${styles_drop.block} ${styles.playlistContainer}`}>
+      <div ref={nodeRef} style={{justifyContent: "center"}} className={`${styles_drop.block} ${styles.playlist}`}>
         <Loading />
         {index == 0 && <progress value={store.loadProgress} />}
       </div>

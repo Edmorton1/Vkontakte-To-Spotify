@@ -36,17 +36,15 @@ function Data() {
         onDrop={(event) => {
           setShowBlock(false); 
           dropHandle(event);
-          store.loadFiles++;
+          setTimeout(() => store.loadFiles++, 50);
           event.preventDefault();
         }}
         onDragOver={(e) => {e.preventDefault(); console.log('OVER')}}
         onDragLeave={(event) => 
         {event.preventDefault(); if (!event.relatedTarget || !document.getElementsByClassName(styles.main)[0].contains(event.relatedTarget as Node)) setShowBlock(false)}}>
         <Playlists />
-        {/* <Block showBlock={showBlock} /> */}
-        {blocksRender()}
         <BlockAdding showBlock={showBlock} />
-        {/* <DragDrop /> */}
+        {blocksRender()}
       </main>
     
       <button onClick={() => setModalWarning(true)} className={(styles.button, styles_data_wrapper.button)}>Добавить всё</button>
