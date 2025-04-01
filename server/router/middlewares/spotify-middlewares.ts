@@ -31,7 +31,12 @@ class SpotifyMiddlewares {
       res.send(true)
     } catch {
       console.log('КЭТЧ')
-      res.send(false)
+      console.log(req.cookies.spotify_refresh_token)
+      if (req.cookies.spotify_refresh_token === undefined) {
+        res.send('undefined')
+      } else {
+        res.send(false)
+      }
     }
   }
 }

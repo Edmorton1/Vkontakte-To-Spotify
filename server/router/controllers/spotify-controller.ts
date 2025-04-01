@@ -1,12 +1,9 @@
 import { $spotifyPost } from "@s/router/axios/$spotify-post"
-import { chunkArray, cleanText, cosineSimilarity, delay } from "@s/router/functions"
+import { chunkArray, delay } from "@s/router/functions"
 import SpotifyModel from "@s/router/models/spotify-model"
 import { SpotifyDataInterface, spotifyTrackDataInterface, trackInterface, userTokens } from "@s/router/types"
 import { Request, Response } from "express"
 import * as cheerio from 'cheerio'
-import {readFileSync} from 'fs'
-import path from 'path'
-import fs from 'fs/promises'
 import { pushed_playlists, user_data, user_id } from "@s/router/db"
 import $spotify from "@s/router/axios/$spotify"
 import WebsocketController from "@s/router/controllers/websocket-controller"
@@ -61,21 +58,23 @@ class SpotifyController {
         try {
             // WebsocketController.sendmessage('zaebal')
             const files = req.files.map(file => {
-                // if (file.mimetype != 'text/html') {
-                //     throw new Error('EXTENSION ERROR')
-                // }
+                console.log(file)
+                if (!['text/html', 'text/plain'].includes(file.mimetype)) {
+                    throw new Error('EXTENSION ERROR')
+                }
                 const buffer = Buffer.from(file.fieldname, 'latin1')
-                return [buffer.toString('utf-8').split('.').slice(0, -1).join('.'), file.buffer.toString('utf-8')]
+                const name = buffer.toString('utf-8').split('.').slice(0, -1).join('.')
+                return [name.toLowerCase() == 'моя музыка' ? 'Моя музыка' : name, file.buffer.toString('utf-8')]
             }).sort((a, b) => a[1].length - b[1].length)
+
+            function myMusicCheck(name: string, iftrue: string, ifalse: string): string {return name == 'Моя музыка' ? iftrue : ifalse}
             
-            // let count = (files.length - 1)
             WebsocketController.setLoadFiles(files.length - 1)
-            const total: SpotifyDataInterface[] = []
 
             for (let file of files) {
-                // count--
                 const $ = cheerio.load(file[1])
-                const tracksElements =  chunkArray($('.audio_row__performer_title').toArray())
+                const tracksElements =  chunkArray($(myMusicCheck(file[0], ".audio_row_content._audio_row_content", '.audio_row__performer_title')).toArray())
+                console.log(file[0])
                 let trackState = 0;
                 const playlist: SpotifyDataInterface = {
                     playlist: file[0],
@@ -83,11 +82,13 @@ class SpotifyController {
                     tracks: []
                 }
     
+                let count = 0
                 for (let trackPack of tracksElements) {
-                    (tracksElements.length > 2 && await delay(6000))
+                    (tracksElements.length > 2 && count > 0 && await delay(6000))
+                    count++
                     const tracks: trackInterface[] = await Promise.all(trackPack.map(async e => {
-                        const artist = $(e).find('.artist_link').text().trim()
-                        const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()
+                        const artist = $(e).find(myMusicCheck(file[0], '.audio_row__performers a', '.artist_link')).text().trim()
+                        const name = $(e).find(myMusicCheck(file[0], '.audio_row__title_inner', '.audio_row__title_inner._audio_row__title_inner')).text().trim()
                         if (name && artist) {
                             const result = await SpotifyModel.take(artist, name)
                             trackState++
@@ -102,6 +103,7 @@ class SpotifyController {
                 // total.push(playlist)
                 WebsocketController.pushToDB(playlist)
                 WebsocketController.setLoadFiles(-1)
+                count = 0
             }
             // res.json(total)
             // user_data.push(...total)
@@ -155,20 +157,25 @@ class SpotifyController {
         }
     }
     removePlaylist = async (req: Request, res: Response) => {
-        const id = Number(req.params.id)
-        console.log(user_id)
-        console.log(id)
-        const playlist_id = pushed_playlists.filter(e => e.id_site == id)[0].id_spoty
-        const indexToRemove = pushed_playlists.findIndex(e => e.id_spoty === playlist_id)
-        pushed_playlists.splice(indexToRemove, 1)
-        console.log(pushed_playlists)
-        // const playlistsInSpoty: any[] = (await $spotifyPost.get(`https://api.spotify.com/v1/me/playlists`)).data.items
-        // const allPlaylists: string[] = playlistsInSpoty.map(e => e.id)
-        // console.log(allPlaylists) -- ПОЛУЧЕНИЕ ВСЕХ ПЛЕЙЛИСТОВ
-        const playlistsInSpoty = $spotifyPost.delete(`https://api.spotify.com/v1/playlists/${playlist_id}/followers`)
-        user_data[id].is_published = false
-        console.log(user_data)
-        res.json(playlistsInSpoty)
+        try {
+            const id = Number(req.params.id)
+            console.log(user_id)
+            console.log(id)
+            const playlist_id = pushed_playlists.filter(e => e.id_site == id)[0].id_spoty
+            const indexToRemove = pushed_playlists.findIndex(e => e.id_spoty === playlist_id)
+            pushed_playlists.splice(indexToRemove, 1)
+            console.log(pushed_playlists)
+            // const playlistsInSpoty: any[] = (await $spotifyPost.get(`https://api.spotify.com/v1/me/playlists`)).data.items
+            // const allPlaylists: string[] = playlistsInSpoty.map(e => e.id)
+            // console.log(allPlaylists) -- ПОЛУЧЕНИЕ ВСЕХ ПЛЕЙЛИСТОВ
+            const playlistsInSpoty = $spotifyPost.delete(`https://api.spotify.com/v1/playlists/${playlist_id}/followers`)
+            user_data[id].is_published = false
+            console.log(user_data)
+            res.json(playlistsInSpoty)
+        } catch(err) {
+            console.log(err)
+            throw new Error('REMOVE PLAYLSIT ERROR')
+        }
     }
 
     updateTrack = async (req: Request, res: Response) => {

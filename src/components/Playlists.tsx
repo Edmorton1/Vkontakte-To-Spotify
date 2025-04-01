@@ -54,7 +54,13 @@ function Playlists() {
       }}>
         <div ref={playlistRef} className={styles.playlist}>
           <div className={styles.playlist__cover}>{e.playlist}</div>
-          <span>{sim > 0 ? `${sim} треков из ${e.tracks.length} несовпадают` : 'ㅤ'}</span>
+          <span>
+            {e.tracks.length === 0
+              ? "ВНИМАНИЕ: ПЛЕЙЛИСТ ПУСТ"
+              : sim > 0
+              ? `${sim} треков из ${e.tracks.length} несовпадают`
+              : "ㅤ"}
+          </span>
           <button onClick={() => {setModalTracks(true); setOpenPlaylist(playlist_id)}} className={styles.button__open} disabled={is_published || store.isLoadCreate.includes(playlist_id)}>Открыть</button>
           {/* {openPlaylist == playlist_id &&
             <Modal openPlaylist={openPlaylist} playlist_id={playlist_id} >{tracks(playlist_id)}</Modal>

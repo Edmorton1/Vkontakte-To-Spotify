@@ -17,34 +17,43 @@ class Store {
   isLoadCreate: number[] = []
   loadFiles: number = 0
   loadProgress: number = 0
-  // socket: WebSocket | null = null
+
+  incrementLoadFiles() {
+    this.loadFiles++
+  }
 
   pushData = (data: SpotifyDataInterface) => {
     runInAction(() => this.data.push(data))
   }
 
-  async checkRefreshToken() {
-    const request = await $api.get('http://localhost:3000/api/checkRefreshToken')
-    return runInAction(() => request.data)
+  setPlaylist = (index: number) => {
+    return this.data[index]
   }
 
-  loadPlaylists = action(async (formData: FormData, setShowBlock: Function) => {
+  async checkRefreshToken() {
     try {
-      // console.log(formData)
-      // this.loadFiles = true
+      const request = await $api.get('http://localhost:3000/api/checkRefreshToken')
+      console.log(request)
+      if (request.data == false) throw new Error('Не удалось пройти аутентификацию, вероятно проблема в том, что Spotify не работает в России')
+      //ПОТОМ ПОМЕНЯТЬ
+      return runInAction(() => request.data)
+      // return runInAction(() => true)
+    } catch(err) {
+      ErrorStore.setError(new Error(err.message))
+    }
+  }
+
+  loadPlaylists = action(async (formData: FormData, setShowBlock?: Function) => {
+    try {
       await $api.post(`http://localhost:3000/api/take`, formData)
     } catch(err) {
       console.log(err)
       ErrorStore.setError(new Error('Не удалось выполнить операцию. Плейлсит должен быть обязательно в формате HTML или TXT'))
     } finally {
-      // this.loadFiles = 0
-      setShowBlock(false)
+      this.loadFiles = 0
+      setShowBlock ? setShowBlock(false) : null
     }
   })
-
-  setPlaylist = (index: number) => {
-    return this.data[index]
-  }
 
   updateTracks = action(
     async(playlist: number, track: number, changeType: changeTypes, changeValue: string = '') => {

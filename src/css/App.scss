@@ -20,11 +20,16 @@ body {
     margin: 0px;
     background-color: var(--bg_color);
     color: var(--fo_color);
-    display: flex;
-    justify-content: center;
+
 }
 
 header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    left: 0.5;
     font-size: 44px;
     display: flex;
     align-items: center;

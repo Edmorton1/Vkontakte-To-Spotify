@@ -16,7 +16,7 @@ function Warning({playlist_arr, uslovie, setModalWarning}: propsInterface) {
 
   return (
     <Modal setModal={setModalWarning} nodeRef={nodeRef} uslovie={uslovie}>
-      <div className={style.wrapper} ref={nodeRef}>
+      <div className={style.wrapper} ref={nodeRef} onClick={(e) => e.stopPropagation()}>
         <div>Внимание!</div>
         <span>У вас есть не одобренные треки</span>
         <div>

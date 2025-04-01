@@ -15,6 +15,8 @@ export default function createWebSocketServer(server: any) {
           console.log(user_data)
       })
       ws.on('close', () => {
+        //@ts-ignore
+        user_data = []
         console.log('КЛИЕНТ ОТКЛЮЧИЛСЯ')
       })
   });
