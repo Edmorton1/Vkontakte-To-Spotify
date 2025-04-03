@@ -27,16 +27,18 @@ class SpotifyModel {
   // }
 
   async getCallback(code: string, state: string) {
-    console.log(code);
+    // console.log(code);
     const data = qs.stringify({
       grant_type: "authorization_code",
       code: code,
       redirect_uri: `${process.env.URL_SERVER_API}callback`,
     });
+    console.log(data, 'data')
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization: `Basic ${AuthorizationBasic}`,
     };
+    console.log(headers, 'headers')
     // const request = await $spotify.post('https://accounts.spotify.com/api/token', data,
     //   {headers: { "Content-Type": "application/x-www-form-urlencoded" }})
     const request = await fetch("https://accounts.spotify.com/api/token", {
@@ -45,9 +47,10 @@ class SpotifyModel {
       body: data,
       headers: headers,
     });
+    console.log(request)
     return await request.json();
   }
-  
+
   take = async (artist: string, name: string) => {
     async function getResponse(str: string) {
       // console.log(str)

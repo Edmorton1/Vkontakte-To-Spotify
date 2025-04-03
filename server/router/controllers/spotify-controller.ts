@@ -43,8 +43,10 @@ class SpotifyController {
             console.log('GET CALLBACK')
             const code = req.query.code as string
             const state = req.query.state as string
+            console.log(code, state)
             const request = await SpotifyModel.getCallback(code, state) as userTokens
             res.cookie('spotify_refresh_token', request.refresh_token, {httpOnly: true, sameSite: 'none'})
+            console.log('Кука установлена')
             res.redirect(process.env.URL_CLIENT)
         } catch(err) {
             console.log(err)
