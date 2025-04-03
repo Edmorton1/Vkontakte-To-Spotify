@@ -47,6 +47,7 @@ class SpotifyModel {
     });
     return await request.json();
   }
+  
   take = async (artist: string, name: string) => {
     async function getResponse(str: string) {
       // console.log(str)
