@@ -40,10 +40,11 @@ class SpotifyController {
 
     async getCallback(req: Request, res: Response) {
         try {
+            console.log('GET CALLBACK')
             const code = req.query.code as string
             const state = req.query.state as string
             const request = await SpotifyModel.getCallback(code, state) as userTokens
-            res.cookie('spotify_refresh_token', request.refresh_token, {httpOnly: true, secure: true, sameSite: 'lax'})
+            res.cookie('spotify_refresh_token', request.refresh_token, {httpOnly: true, sameSite: 'none'})
             res.redirect(process.env.URL_CLIENT)
         } catch(err) {
             console.log(err)
