@@ -40,6 +40,7 @@ class SpotifyModel {
     // const request = await $spotify.post('https://accounts.spotify.com/api/token', data,
     //   {headers: { "Content-Type": "application/x-www-form-urlencoded" }})
     const request = await fetch("https://accounts.spotify.com/api/token", {
+      credentials: "include",
       method: "POST",
       body: data,
       headers: headers,

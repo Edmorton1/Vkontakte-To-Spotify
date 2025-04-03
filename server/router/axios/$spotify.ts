@@ -3,6 +3,7 @@ import axios from 'axios'
 async function getSpotifyToken() {
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
@@ -17,8 +18,9 @@ async function getSpotifyToken() {
 }
 
 const $spotify = axios.create({
+    withCredentials: true,
     headers: {
-        'Authorization': `Bearer `
+        'Authorization': `Bearer `,
     }
 })
 

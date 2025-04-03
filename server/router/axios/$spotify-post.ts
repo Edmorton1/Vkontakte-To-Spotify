@@ -5,6 +5,7 @@ import axios, { AxiosError } from "axios";
 import * as qs from 'qs'
 
 export const $spotifyPost = axios.create({
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json"
   },
@@ -21,6 +22,7 @@ export async function getAccessToken(refresh_token: string) {
     "Authorization": `Basic ${AuthorizationBasic}`
   }
   const response = await fetch('https://accounts.spotify.com/api/token', {
+    credentials: 'include',
     method: "POST",
     body: body,
     headers: headers
