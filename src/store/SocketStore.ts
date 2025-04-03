@@ -1,4 +1,5 @@
 // import store from "@/store/store";
+import { URL_SERVER_WS } from "@/URLS";
 import { WebSocketInterface } from "@s/router/types";
 import { makeAutoObservable, runInAction } from "mobx"
 
@@ -13,7 +14,7 @@ class SocketStore {
 
   connect = async () => {
     const { default: store } = await import("./store"); 
-    this.socket = new WebSocket("ws://localhost:3000")
+    this.socket = new WebSocket(`${URL_SERVER_WS}`)
 
     this.socket.onopen = () => {
       console.log('ПРИВЕТ')
