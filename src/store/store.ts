@@ -29,7 +29,7 @@ class Store {
       if (request.data == false) throw new Error('Не удалось пройти аутентификацию, вероятно проблема в том, что Spotify не работает в России')
       return runInAction(() => request.data)
     } catch(err) {
-      ErrorStore.setError(new Error(err.message))
+      ErrorStore.setError(new Error('Ошибка сети'))
     }
   }
 
