@@ -1,5 +1,4 @@
 import * as styles from "@/css/dragDrop.module.scss"
-import $api from "@/store/$api"
 import store from "@/store/store"
 import { observer } from "mobx-react-lite"
 import { useState } from "react"
@@ -23,7 +22,7 @@ export const onDrop = (event: React.DragEvent<any>, setShowBlock?: React.Dispatc
   console.log('ОН ДРОП')
   setShowBlock ? setShowBlock((false)) : ''; 
   dropHandle(event, setShowBlock);
-  setTimeout(() => store.incrementLoadFiles(), 100);
+  // setTimeout(() => store.incrementLoadFiles(), 100);
   event.preventDefault();
 }
 

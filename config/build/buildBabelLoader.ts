@@ -1,4 +1,4 @@
-import { BuildOptions } from "../types/types";
+import { BuildOptions } from "../types";
 
 export function buildBabelLoader(options: BuildOptions) {
   const isDev = options.mode == "development";
@@ -11,7 +11,7 @@ export function buildBabelLoader(options: BuildOptions) {
       [
         "@babel/preset-react",
         {
-          runtime: isDev ? "automatic" : "classic",
+          runtime: "automatic",
         },
       ],
     ],

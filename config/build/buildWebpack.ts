@@ -2,7 +2,7 @@ import { WebpackConfiguration } from "webpack-dev-server";
 import buildDevServer from "./buildDevServer";
 import buildLoaders from "./buildLoaders";
 import buildPlugins from "./buildPlugins";
-import { BuildOptions } from "../types/types";
+import { BuildOptions } from "../types";
 import buildResolvers from "./buildResolvers";
 
 export function buildWebpack(options: BuildOptions): WebpackConfiguration {
@@ -25,6 +25,10 @@ export function buildWebpack(options: BuildOptions): WebpackConfiguration {
             resolve: buildResolvers(options),
             devtool: isDev && 'inline-source-map',
             devServer:  isDev ? buildDevServer(options) : undefined,
+            // externals: {
+            //     react: "React",
+            //     "react-dom": "ReactDOM"
+            // }
         }
     )
 }

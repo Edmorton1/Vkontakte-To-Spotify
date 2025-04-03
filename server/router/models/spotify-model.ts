@@ -31,7 +31,7 @@ class SpotifyModel {
     const data = qs.stringify({
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: "http://localhost:3000/api/callback",
+      redirect_uri: `${process.env.URL_SERVER_API}callback`,
     });
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",

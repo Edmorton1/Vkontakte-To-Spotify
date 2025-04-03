@@ -1,5 +1,5 @@
 import { Configuration } from "mini-css-extract-plugin"
-import { BuildOptions } from "../types/types"
+import { BuildOptions } from "../types"
 
 function buildDevServer(options: BuildOptions): Configuration['devServer'] {
     const isDev = options.mode == 'development';

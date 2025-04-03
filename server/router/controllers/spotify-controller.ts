@@ -107,7 +107,7 @@ class SpotifyController {
                 WebsocketController.pushToDB(playlist)
                 WebsocketController.setLoadFiles(-1)
                 count = 0
-                res.status(200)
+                res.send('200')
             }
             // res.json(total)
             // user_data.push(...total)

@@ -1,6 +1,7 @@
 import $api from "@/store/$api";
 import ErrorStore from "@/store/ErrorStore";
 import SocketStore from "@/store/SocketStore";
+import { URL_SERVER_API } from "@/URLS";
 import { delay } from "@s/router/functions";
 import { SpotifyDataInterface } from "@s/router/types";
 import { action, makeAutoObservable, observable, runInAction, toJS } from "mobx";
@@ -33,7 +34,7 @@ class Store {
 
   async checkRefreshToken() {
     try {
-      const request = await $api.get('http://localhost:3000/api/checkRefreshToken')
+      const request = await $api.get(`${URL_SERVER_API}checkRefreshToken`)
       console.log(request)
       if (request.data == false) throw new Error('Не удалось пройти аутентификацию, вероятно проблема в том, что Spotify не работает в России')
       //ПОТОМ ПОМЕНЯТЬ
@@ -46,12 +47,13 @@ class Store {
 
   loadPlaylists = action(async (formData: FormData, setShowBlock?: Function) => {
     try {
-      await $api.post(`http://localhost:3000/api/take`, formData)
+      setTimeout(() => this.loadFiles++, 100);
+      await $api.post(`${URL_SERVER_API}take`, formData)
     } catch(err) {
       console.log(err)
       ErrorStore.setError(new Error('Не удалось выполнить операцию. Плейлсит должен быть обязательно в формате HTML или TXT'))
     } finally {
-      this.loadFiles = 0
+      // this.loadFiles = 0
       setShowBlock ? setShowBlock(false) : null
     }
   })
@@ -60,7 +62,7 @@ class Store {
     async(playlist: number, track: number, changeType: changeTypes, changeValue: string = '') => {
       try {
         const body = {[changeType]: changeValue}
-        const request = await $api.put(`http://localhost:3000/api/updateTrack/${playlist}/${track}`, body)
+        const request = await $api.put(`${URL_SERVER_API}updateTrack/${playlist}/${track}`, body)
         if (changeType == 'url') {
           // console.log(request.data)
           this.data[playlist].tracks[track] = request.data
@@ -86,7 +88,7 @@ class Store {
         // await delay(3000)
         for (let i of playlist_arr) {
           if (this.data[i].tracks.length !== 0) this.isLoadCreate.push(i)
-          await $api.post('http://localhost:3000/api/createAllPlaylists', {
+          await $api.post(`${URL_SERVER_API}createAllPlaylists`, {
             playlist: i,
             clean: clean
           })
@@ -105,7 +107,7 @@ class Store {
     async (playlist_id: number) => {
       try {
         this.isLoadCreate.push(playlist_id)
-        await $api.delete(`http://localhost:3000/api/removePlaylist/${playlist_id}`)
+        await $api.delete(`${URL_SERVER_API}removePlaylist/${playlist_id}`)
         this.data[playlist_id].is_published = false
         this.isLoadCreate = this.isLoadCreate.filter(e => e != playlist_id)
         console.log(this.data)
