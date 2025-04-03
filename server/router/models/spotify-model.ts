@@ -48,6 +48,7 @@ class SpotifyModel {
   }
   take = async (artist: string, name: string) => {
     async function getResponse(str: string) {
+      // console.log(str)
       const response = await $spotifyPost.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(str)}&type=track&limit=50`);
       const bestMatch = response.data.tracks.items.map((e: spotifyTrackDataInterface) => ({
           vk_name: name,
@@ -64,9 +65,9 @@ class SpotifyModel {
       return bestMatch
     }
     const first = await getResponse(`${artist} ${name}`)
-    console.log('фирст')
-    await delay(2000)
-    console.log('секонд')
+    // console.log('фирст')
+    await delay(1000)
+    // console.log('секонд')
     const second = await getResponse(name)
     const total = [first, second].sort((a: trackInterfaceWithSim, b: trackInterfaceWithSim) => (b.sim_total) - (a.sim_total))[0]
     delete total.sim_total

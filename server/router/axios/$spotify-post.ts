@@ -34,8 +34,8 @@ $spotifyPost.interceptors.response.use(
   async (error: AxiosError) => {
     if ([429, 500, 502, 503, 504].includes(error.response?.status)) {
       console.log(error.response)
-      await new Promise(res => setTimeout(res, 30000))
-      return $spotifyPost.request(error.config.data)
+      await new Promise(res => setTimeout(res, 5000))
+      return $spotifyPost.request(error.config)
     }
     return Promise.reject(error)
   }

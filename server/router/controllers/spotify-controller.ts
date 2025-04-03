@@ -52,13 +52,15 @@ class SpotifyController {
     }
 
     take = async (req: Request, res: Response) => {
+        console.log('1 ПОЛУЧЕНИЕ ЗАПРОСА ТЕЙК')
+        console.log(`🚀 Вызов take() | Используемая память: ${process.memoryUsage().heapUsed / 1024 / 1024} MB`);
         if (!req.files || !Array.isArray(req.files)) {
             return res.status(400).json({ message: "Файлы не загружены" });
         }
         try {
             // WebsocketController.sendmessage('zaebal')
             const files = req.files.map(file => {
-                console.log(file)
+                // console.log(file)
                 if (!['text/html', 'text/plain'].includes(file.mimetype)) {
                     throw new Error('EXTENSION ERROR')
                 }
@@ -74,7 +76,7 @@ class SpotifyController {
             for (let file of files) {
                 const $ = cheerio.load(file[1])
                 const tracksElements =  chunkArray($(myMusicCheck(file[0], ".audio_row_content._audio_row_content", '.audio_row__performer_title')).toArray())
-                console.log(file[0])
+                // console.log(file[0])
                 let trackState = 0;
                 const playlist: SpotifyDataInterface = {
                     playlist: file[0],
@@ -84,7 +86,7 @@ class SpotifyController {
     
                 let count = 0
                 for (let trackPack of tracksElements) {
-                    (tracksElements.length > 2 && count > 0 && await delay(6000))
+                    (tracksElements.length > 1 && count > 0 && await delay(2000))
                     count++
                     const tracks: trackInterface[] = await Promise.all(trackPack.map(async e => {
                         const artist = $(e).find(myMusicCheck(file[0], '.audio_row__performers a', '.artist_link')).text().trim()
@@ -101,9 +103,11 @@ class SpotifyController {
                 playlist.tracks.push(...tracks)
                 }
                 // total.push(playlist)
+                console.log('2 КОНЕЦ ЗАПРОСА ТЕЙК')
                 WebsocketController.pushToDB(playlist)
                 WebsocketController.setLoadFiles(-1)
                 count = 0
+                res.status(200)
             }
             // res.json(total)
             // user_data.push(...total)
@@ -119,8 +123,8 @@ class SpotifyController {
         // console.log(user_data)
         const {playlist, clean}: {playlist: number, clean: boolean} = req.body
         console.log(playlist, clean)
-        const validateData = user_data.filter((e, i) => (!e.is_published && (playlist == i)))
-        // console.log(validateData)
+        const validateData = user_data.filter((e, i) => (!e.is_published && !(e.tracks.length === 0) && (playlist == i)))
+        console.log(validateData)
         try {
             for (const playlist_to_pub of validateData) {
                 const spotify_playlist = await $spotifyPost.post(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
@@ -147,7 +151,7 @@ class SpotifyController {
                     await $spotifyPost.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, body)
                 }
             }
-            user_data[playlist].is_published = true
+            user_data[playlist].tracks.length > 0 ? user_data[playlist].is_published = true : user_data[playlist].is_published = false
             console.log(pushed_playlists)
             console.log(user_data)
             res.json(user_data)

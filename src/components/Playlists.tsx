@@ -30,7 +30,8 @@ function Playlists() {
     // }
     // console.log(countNes())
     const sim = e.tracks.filter((sim) => sim.sim_event).length
-    const is_published = store.data[playlist_id].is_published
+    const is_published = e.is_published
+    const lentrack =e.tracks.length === 0
 
     function tracks(playlist: number) {
       return <div ref={modalRef} onClick={(event) => event.stopPropagation()} className={styles_tracks.tracks}>
@@ -39,7 +40,7 @@ function Playlists() {
           <span>Схожесть</span>
           <span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/VK_Compact_Logo_%282021-present%29.svg/1200px-VK_Compact_Logo_%282021-present%29.svg.png" /></span>
         </div>
-        {store.data[playlist].tracks.map((track, index) => (
+        {e.tracks.map((track, index) => (
           <TrackList key={index} track={track} index={index} playlist={playlist_id} />
       ))}
       </div>
@@ -55,13 +56,13 @@ function Playlists() {
         <div ref={playlistRef} className={styles.playlist}>
           <div className={styles.playlist__cover}>{e.playlist}</div>
           <span>
-            {e.tracks.length === 0
+            {lentrack
               ? "ВНИМАНИЕ: ПЛЕЙЛИСТ ПУСТ"
               : sim > 0
               ? `${sim} треков из ${e.tracks.length} несовпадают`
               : "ㅤ"}
           </span>
-          <button onClick={() => {setModalTracks(true); setOpenPlaylist(playlist_id)}} className={styles.button__open} disabled={is_published || store.isLoadCreate.includes(playlist_id)}>Открыть</button>
+          <button onClick={() => {setModalTracks(true); setOpenPlaylist(playlist_id)}} className={styles.button__open} disabled={is_published || store.isLoadCreate.includes(playlist_id) || lentrack}>Открыть</button>
           {/* {openPlaylist == playlist_id &&
             <Modal openPlaylist={openPlaylist} playlist_id={playlist_id} >{tracks(playlist_id)}</Modal>
           } */}
@@ -77,7 +78,7 @@ function Playlists() {
               if (sim) {
                 setOpenPlaylist(`spotify-${playlist_id}`); setModalWarning(true)
               } else {store.createPlaylist([playlist_id])}
-            }} className={styles.button} disabled={store.isLoadCreate.includes(playlist_id)} >{store.isLoadCreate.includes(playlist_id) ? <Loading /> : `Добавить на Spotify`}</button>
+            }} className={styles.button} disabled={store.isLoadCreate.includes(playlist_id) || lentrack} >{store.isLoadCreate.includes(playlist_id) ? <Loading /> : `Добавить на Spotify`}</button>
           }
           <Warning playlist_arr={[playlist_id]} setModalWarning={setModalWarning} uslovie={openPlaylist == `spotify-${playlist_id}` && modalWarning} />
         </div>

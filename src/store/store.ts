@@ -23,6 +23,7 @@ class Store {
   }
 
   pushData = (data: SpotifyDataInterface) => {
+    // if (data.tracks.length === 0) data.is_published = true
     runInAction(() => this.data.push(data))
   }
 
@@ -80,15 +81,16 @@ class Store {
     async (playlist_arr: number[], clean?: boolean) => {
       try {
         // const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-        this.isLoadCreate.push(...playlist_arr)
+        // this.isLoadCreate.push(...playlist_arr)
         console.log(this.isLoadCreate)
         // await delay(3000)
         for (let i of playlist_arr) {
+          if (this.data[i].tracks.length !== 0) this.isLoadCreate.push(i)
           await $api.post('http://localhost:3000/api/createAllPlaylists', {
             playlist: i,
             clean: clean
           })
-          this.data[i].is_published = true
+          if (this.data[i].tracks.length !== 0) this.data[i].is_published = true
         }
         // this.data.forEach((e, i) => {playlist_arr.includes(i) ? e.is_published = true : null})
         this.isLoadCreate = this.isLoadCreate.filter(e => !this.isLoadCreate.includes(e))

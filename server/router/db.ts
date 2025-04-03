@@ -12,6 +12,8 @@ export let user_id = ''
 
 export let pushed_playlists: {id_site: number, id_spoty: string}[] = []
 
+export let loadFiles = 0
+
 export const user_data: SpotifyDataInterface[] = []
 
 // [

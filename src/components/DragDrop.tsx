@@ -20,6 +20,7 @@ const dropHandle = async (e: React.DragEvent<any>, setShowBlock?: React.Dispatch
 }
 
 export const onDrop = (event: React.DragEvent<any>, setShowBlock?: React.Dispatch<React.SetStateAction<boolean>>) => {
+  console.log('ОН ДРОП')
   setShowBlock ? setShowBlock((false)) : ''; 
   dropHandle(event, setShowBlock);
   setTimeout(() => store.incrementLoadFiles(), 100);

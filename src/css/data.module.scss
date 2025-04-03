@@ -26,6 +26,7 @@ $border_radius: 50px;
 .button_all {
   @extend .button;
   position: fixed;
+  background-color: rgb(99, 42, 255);
   bottom: 3vh;
   width: 50%;
 }
