@@ -1,14 +1,13 @@
-import ErrorStore from "@/store/ErrorStore";
-import SocketStore from "@/store/SocketStore";
-import store from "@/store/store";
+// import SocketStore from "@/store/SocketStore";
+// import store from "@/store/store";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+// import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 function Layout() {
-  const [error, setError] = useState(false)
+  // const [error, setError] = useState(false)
 
-  if (error) throw new Error('jaiza')
+  // if (error) throw new Error('jaiza')
 
   return (
     <>

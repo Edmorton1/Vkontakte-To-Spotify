@@ -1,5 +1,5 @@
-import Data from "@/components/Data"
-import DragDrop from "@/components/DragDrop"
+import Data from "@/components/Data/Data"
+import DragDrop from "@/components/DragDrop/DragDrop"
 import Loading from "@/components/Loading"
 import store from "@/store/store"
 import { observer } from "mobx-react-lite"
@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import * as styles_drop from "@/css/dragDrop.module.scss"
 import loader from "@/assets/loader.png"
-import Enter from "@/components/Enter"
+import Enter from "@/components/Enter/Enter"
 
 function Main() {
   const [auth, setAuth] = useState(null)

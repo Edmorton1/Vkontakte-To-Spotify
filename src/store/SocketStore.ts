@@ -30,10 +30,9 @@ class SocketStore {
         }
         case "playlist": {
           if (!Array.isArray(store.data)) {
-            store.data = [];  // 🛠 Если store.data был undefined, создаем пустой массив
+            store.data = [];
           }
           store.pushData(parse.data)
-          // console.log(parse.data)
           break
         }
         case "loading": {

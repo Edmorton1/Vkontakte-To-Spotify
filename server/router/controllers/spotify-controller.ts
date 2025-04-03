@@ -9,35 +9,6 @@ import $spotify from "@s/router/axios/$spotify"
 import WebsocketController from "@s/router/controllers/websocket-controller"
 
 class SpotifyController {
-    // async getSpotifyData(req: Request, res: Response) {
-    //     const response = await SpotifyModel.getSpotifyData(req.params.params)
-    //     console.log(req.cookies)
-    //     res.json(response)
-    // }
-    // static async getPlaylists() {
-    //     const DIR_PATH = path.resolve(__dirname)
-
-    //     const files = await fs.readdir(DIR_PATH + '/playlists');
-    //     const total: VKDataInterface[] = []
-
-    //     await Promise.all(files.map((filename) => {
-    //         console.log(filename.slice(0, -5))
-    //         const html = readFileSync(DIR_PATH + '/playlists/' + filename, 'utf8')
-    //         const $ = cheerio.load(html)
-    //         const tracks: [string, string][] = []
-    //         $('.audio_row__performer_title').each((i, e) => {
-    //             const artist = $(e).find('.artist_link').text().trim()
-    //             const name = $(e).find('.audio_row__title_inner._audio_row__title_inner').text().trim()
-    //             if (name && artist) {
-    //                 tracks.push([artist, name])
-    //             }
-    //         })
-    //         total.push({playlist: filename.slice(0, -5), tracks: tracks})
-    //         }))
-    //         //@ts-ignore
-    //         user_data_vk = total
-    // }
-
     async getCallback(req: Request, res: Response) {
         try {
             console.log('GET CALLBACK')
@@ -61,7 +32,6 @@ class SpotifyController {
             return res.status(400).json({ message: "Файлы не загружены" });
         }
         try {
-            // WebsocketController.sendmessage('zaebal')
             const files = req.files.map(file => {
                 // console.log(file)
                 if (!['text/html', 'text/plain'].includes(file.mimetype)) {

@@ -18,14 +18,6 @@ type trackInterfaceWithSim = trackInterface & {sim_total: number}
 // https://accounts.spotify.com/authorize?
 
 class SpotifyModel {
-  // async getSpotifyData(params: string) {
-  //   const request = (await $spotify.post(`https://api.spotify.com/v1/playlists/3HOK2rSvykVHJD1ZApCrrT/tracks`), {
-  //     uris: "spotify:track:3m2fuTHJMXCnxiIBilSQrE"
-  //   })
-  //   console.log('LJ<FDKTYJ')
-  //   return request
-  // }
-
   async getCallback(code: string, state: string) {
     // console.log(code);
     const data = qs.stringify({

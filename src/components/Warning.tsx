@@ -1,5 +1,4 @@
 import Modal from "@/components/Modal"
-import TransitionShablon from "@/components/TransitionShablon"
 import * as style from "@/css/warning.module.scss"
 import store from "@/store/store"
 import { useRef } from "react"
@@ -20,8 +19,8 @@ function Warning({playlist_arr, uslovie, setModalWarning}: propsInterface) {
         <div>Внимание!</div>
         <span>У вас есть не одобренные треки</span>
         <div>
-          <button onClick={() => store.createPlaylist(playlist_arr, true)}>Добавить только одобренные треки</button>
-          <button onClick={() => store.createPlaylist(playlist_arr, false)}>Добавить всё</button>
+          <button onClick={() => {store.createPlaylist(playlist_arr, true); setModalWarning(false)}}>Добавить только одобренные треки</button>
+          <button onClick={() => {store.createPlaylist(playlist_arr, false); setModalWarning(false)}}>Добавить всё</button>
         </div>
       </div>
   </Modal>

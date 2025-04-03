@@ -1,14 +1,12 @@
 import ErrorStore from "@/store/ErrorStore"
-import store from "@/store/store"
 import { observer } from "mobx-react-lite"
 import { createPortal } from "react-dom"
 import Modal from "@/components/Modal";
 import { useState, useEffect, useRef } from "react";
-import { FallbackProps } from "react-error-boundary";
 import * as styles from "@/css/warning.module.scss"
 import { reaction } from "mobx";
 
-function ErrorCheck({children}: any) {
+function ErrorCheck() {
   const nodeRef = useRef(null)
   // ModalStore.open()
   const [modal, setModal] = useState(false)
@@ -23,7 +21,7 @@ function ErrorCheck({children}: any) {
       }
     );
 
-    return () => disposer(); // Очистка реакции при размонтировании
+    return () => disposer();
   }, []);
 
   if (ErrorStore.error) {
@@ -39,8 +37,6 @@ function ErrorCheck({children}: any) {
     </Modal>, document.getElementById("root")
     )
   }
-
-  // return children
 }
 
 export default observer(ErrorCheck)

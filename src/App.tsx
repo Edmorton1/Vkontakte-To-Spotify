@@ -1,14 +1,17 @@
 import { Routes } from 'react-router-dom';
-// ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 import Router from '@/router/Router';
 import "@/css/App.scss"
 import { observer } from 'mobx-react-lite';
+import { ErrorBoundary } from "react-error-boundary";
+import Fallback from "@/Fallback";
 
 function App() {
   return (
-    <Routes>
-      {Router()}
-    </Routes>
+    <ErrorBoundary FallbackComponent={Fallback}>
+      <Routes>
+        {Router()}
+      </Routes>
+    </ErrorBoundary>
   );
 }
 
