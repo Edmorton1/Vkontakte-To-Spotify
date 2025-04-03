@@ -33,12 +33,12 @@ class SpotifyModel {
       code: code,
       redirect_uri: `${process.env.URL_SERVER_API}callback`,
     });
-    console.log(data, 'data')
+    // console.log(data, 'data')
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization: `Basic ${AuthorizationBasic}`,
     };
-    console.log(headers, 'headers')
+    // console.log(headers, 'headers')
     // const request = await $spotify.post('https://accounts.spotify.com/api/token', data,
     //   {headers: { "Content-Type": "application/x-www-form-urlencoded" }})
     const request = await fetch("https://accounts.spotify.com/api/token", {
@@ -47,7 +47,7 @@ class SpotifyModel {
       body: data,
       headers: headers,
     });
-    console.log(request)
+    // console.log(await request.json())
     return await request.json();
   }
 
