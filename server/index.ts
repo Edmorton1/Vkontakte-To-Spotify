@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["https://client-otaku-vibes.up.railway.app/", "http://localhost:5000"],
+    origin: ["https://client-otaku-vibes.up.railway.app", "http://localhost:5000"],
     credentials: true,
   })
 );
