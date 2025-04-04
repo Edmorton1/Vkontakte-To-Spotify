@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --env mode=production",
+    "build": "set NODE_OPTIONS=--max-old-space-size=4096 && webpack --env mode=production",
     "start": "webpack serve --env mode=development port=5000",
     "start:railway": "node client.js",
     "dev": "nodemon -r tsconfig-paths/register --watch server --ignore client --ignore src/store.ts server/index.ts",
