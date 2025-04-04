@@ -38,7 +38,10 @@ export function buildWebpack(options: BuildOptions): WebpackConfiguration {
                         }
                     })
                 ]
-            } : undefined
+            } : undefined,
+            cache: {
+                type: "filesystem"
+            }
             // externals: {
             //     react: "React",
             //     "react-dom": "ReactDOM"
