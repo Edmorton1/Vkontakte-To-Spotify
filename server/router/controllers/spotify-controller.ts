@@ -158,7 +158,7 @@ class SpotifyController {
             const playlist = Number(req.params.playlist)
             const track = Number(req.params.track)
             const methond = Object.keys(req.body)[0] as 'url' | 'sim_event' | 'delete'
-            console.log(req.body)
+            // console.log(req.body)
             if (methond == 'url') {
                 const url = req.body.url.split('/').pop()
                 const response = (await $spotify(`https://api.spotify.com/v1/tracks/${url}`)).data as spotifyTrackDataInterface
