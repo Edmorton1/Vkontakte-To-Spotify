@@ -46,6 +46,7 @@ class Store {
   })
 
   updateTracks = async(playlist: number, track: number, changeType: changeTypes, changeValue: string = '') => {
+    console.log(playlist, track, changeType, changeValue)
       try {
         const body = {[changeType]: changeValue}
         const request = await $api.put(`${URL_SERVER_API}updateTrack/${playlist}/${track}`, body)
@@ -56,7 +57,7 @@ class Store {
           runInAction(() => this.data[playlist].tracks[track].sim_event = false)
         }
         if (changeType == 'delete') {
-          runInAction(() => this.data[playlist].tracks.splice(0, 1))
+          runInAction(() => this.data[playlist].tracks.splice(track, 1))
           console.log(toJS(this.data[playlist].tracks))
         }
       } catch(err) {

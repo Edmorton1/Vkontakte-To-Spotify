@@ -27,7 +27,6 @@ class SpotifyController {
 
     take = async (req: Request, res: Response) => {
         console.log('1 ПОЛУЧЕНИЕ ЗАПРОСА ТЕЙК')
-        console.log(`🚀 Вызов take() | Используемая память: ${process.memoryUsage().heapUsed / 1024 / 1024} MB`);
         if (!req.files || !Array.isArray(req.files)) {
             return res.status(400).json({ message: "Файлы не загружены" });
         }

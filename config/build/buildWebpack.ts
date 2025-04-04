@@ -4,6 +4,7 @@ import buildLoaders from "./buildLoaders";
 import buildPlugins from "./buildPlugins";
 import { BuildOptions } from "../types";
 import buildResolvers from "./buildResolvers";
+import TerserPlugin from "terser-webpack-plugin"
 
 export function buildWebpack(options: BuildOptions): WebpackConfiguration {
     const isDev = options.mode == 'development';
@@ -25,6 +26,19 @@ export function buildWebpack(options: BuildOptions): WebpackConfiguration {
             resolve: buildResolvers(options),
             devtool: isDev && 'inline-source-map',
             devServer:  isDev ? buildDevServer(options) : undefined,
+            optimization: isProd ? {
+                minimize: true,
+                minimizer: [
+                    new TerserPlugin({
+                        minify: TerserPlugin.uglifyJsMinify,
+                        terserOptions: {
+                            compress: {
+                                drop_console: true
+                            }
+                        }
+                    })
+                ]
+            } : undefined
             // externals: {
             //     react: "React",
             //     "react-dom": "ReactDOM"
