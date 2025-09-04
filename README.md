@@ -1,3 +1,19 @@
-Сайт с переносом музыки:
+# <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/VK_Compact_Logo_%282021-present%29.svg/1200px-VK_Compact_Logo_%282021-present%29.svg.png" width="20" /> VKONTAKTE TO SPOTIFY <img  src="https://cdn.worldvectorlogo.com/logos/spotify-2.svg" width="20" />
 
-https://client-otaku-vibes.up.railway.app/
+*- Последнее обновление сайта было 4 апреля 2025 года*
+
+#### Сайт - инструмент, созданный для переноса музыки из Вконтакте в Spotify. Простой и интуитивный интерфейс, красивый дизайн, быстрый перенос без ограничений. Использовался **Spotify API**
+
+### Вступительная страница после авторизации. Поддерживает **Drag'n'Drop** и
+![DragDrop](./screenshots/Screenshot_1.png)
+
+### Плейлисты. Написал свой UiKit на **SCSS**
+![Playlists](./screenshots/Screenshot_2.png)
+
+### Взаимодействие с плейлистом
+![Playlists actions](./screenshots/Screenshot_3.png)
+![Playlists actions](./screenshots/Screenshot_4.png)
+
+![Playlists adding](./screenshots/Screenshot_6.png)
+![Playlists adding](./screenshots/Screenshot_7.png)
+![Playlists adding](./screenshots/Screenshot_8.png)
