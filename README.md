@@ -4,7 +4,7 @@
 
 #### Сайт - инструмент, созданный для переноса музыки из Вконтакте в Spotify. Простой и интуитивный интерфейс, красивый дизайн, быстрый перенос без ограничений. Использовался **Spotify API**
 
-### Вступительная страница после авторизации. Поддерживает **Drag'n'Drop** и
+### Вступительная страница после авторизации. Поддерживает **Drag'n'Drop** и **Input**
 ![DragDrop](./screenshots/Screenshot_1.png)
 
 ### Плейлисты. Написал свой UiKit на **SCSS**
@@ -13,6 +13,8 @@
 ### Взаимодействие с плейлистом
 ![Playlists actions](./screenshots/Screenshot_3.png)
 ![Playlists actions](./screenshots/Screenshot_4.png)
+
+### Загрузка плейлистов, как txt файлов
 
 ![Playlists adding](./screenshots/Screenshot_6.png)
 ![Playlists adding](./screenshots/Screenshot_7.png)
